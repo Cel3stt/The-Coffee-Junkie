@@ -1,17 +1,21 @@
 
 import './App.css'
-import { Login } from './app/Login'
+import Dashboard from './app/Dashboard'
+import Login from './app/Login'
+import { BrowserRouter, Routes, Route} from 'react-router-dom'
 
 
 function App() {
 
-
   return (
-   <>
-   <Login/>
-   </>
-
+    <BrowserRouter>
+    <Routes>
+      <Route path='/adminlogin' element={<Login/>}></Route>
+      <Route path='/dashboard' element={<Dashboard/>}></Route>
   
+  
+    </Routes>
+    </BrowserRouter>
   )
 }
 

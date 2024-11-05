@@ -14,3 +14,5 @@ con.connect(function(err) {
         console.log('Connection Success')
     }
 })
+
+export default con;
