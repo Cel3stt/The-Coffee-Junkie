@@ -1,20 +1,21 @@
 
 import './App.css'
 import Login from './app/Login'
-import { Dashboard } from './app/Dashboard'
+import Dashboard from './app/Dashboard'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Layout from './Layout'
+import React from 'react'
 
-
-function App() {
-
+const App = () => {
   return (
     <BrowserRouter>
-          <Routes>
-              <Route path='/adminlogin' element={<Login/>}/>
-              <Route path='/dashboard' element={<Dashboard/>}/>
-          </Routes>
+      <Routes>
+        <Route path="/adminlogin" element={<Login />} />
+        <Route path="/" element={<Layout />}>
+          <Route path="dashboard" element={<Dashboard />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
-  
   )
 }
 
