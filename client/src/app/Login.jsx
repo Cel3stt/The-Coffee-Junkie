@@ -34,8 +34,8 @@ const Login = () => {
   }
   return (
     <form onSubmit={handleSubmit}>
-  <div className="client/src/app/Login.jsx flex h-screen w-full items-center justify-center px-4">
-    <Card className="mx-auto max-w-sm ">
+  <div className="client/src/app/Login.jsx flex h-screen w-full items-center justify-center px-4 border-0">
+    <Card className="mx-auto max-w-sm border-0 shadow-none">
     <CardHeader>
       <CardTitle className=" text-left text-2xl">Login</CardTitle>
       <CardDescription>

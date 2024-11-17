@@ -2,7 +2,7 @@
 
 import { TrendingUp } from "lucide-react"
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts"
-
+import { useState, useEffect } from "react"
 import {
   Card,
   CardContent,
@@ -21,35 +21,54 @@ const description = "A bar chart with a label"
 
 // Example chart data
 const chartData = [
-    { month: 'Jan', desktop: 48000 },
-    { month: 'Feb', desktop: 15000 },
-    { month: 'Mar', desktop: 50000 },
-    { month: 'Apr', desktop: 35000 },
-    { month: 'June', desktop: 12000 },
-    { month: 'July', desktop: 35000 },
-    { month: 'Aug', desktop: 42000 },
-    { month: 'Sep', desktop: 18000 },
-    { month: 'Oct', desktop: 43000 },
-    { month: 'Nov', desktop: 8000 },
-    { month: 'Dec', desktop: 35000 }
+    { month: 'Jan', sales: 48000 },
+    { month: 'Feb', sales: 15000 },
+    { month: 'Mar', sales: 50000 },
+    { month: 'Apr', sales: 35000 },
+    { month: 'May', sales: 35000 },
+    { month: 'June', sales: 12000 },
+    { month: 'July', sales: 35000 },
+    { month: 'Aug', sales: 42000 },
+    { month: 'Sep', sales: 18000 },
+    { month: 'Oct', sales: 43000 },
+    { month: 'Nov', sales: 8000 },
+    { month: 'Dec', sales: 35000 }
 ]
 
+const formatSales = (value, isMobile) => {
+  if (isMobile && value >= 1000) return `${(value/1000).toFixed(0)}k`
+  return value;
+}
 // Define chart config inside the component
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  sales: {
+    label: "Sales",
     color: "hsl(var(--chart-1))", // Make sure this CSS variable is defined or use a fixed color
   },
 }
 
 const salesChart = () => {
+ const [isMobile, setIsMobile] = useState(false)
+
+ useEffect(() => {
+  const checkScreenSize = () => {
+    setIsMobile(window.innerWidth <= 768)
+  };
+
+  checkScreenSize();
+  window.addEventListener('resize', checkScreenSize)
+
+  return () => {
+    window.removeEventListener('resize', checkScreenSize)
+  }
+ }, [])
   return (
     <Card>
       <CardHeader>
         
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer className='shadow-none' config={chartConfig}>
           <BarChart
             accessibilityLayer
             data={chartData}
@@ -67,14 +86,19 @@ const salesChart = () => {
             />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={<ChartTooltipContent
+                hideLabel
+                formatter={(value) => formatSales(value, isMobile)}
+              />}
+              
             />
-            <Bar dataKey="desktop" fill="hsl(var(--chart-1))" radius={8}>
+            <Bar dataKey="sales" fill="hsl(var(--chart-1))" radius={8}>
               <LabelList
                 position="top"
                 offset={12}
                 className="fill-foreground"
                 fontSize={12}
+                formatter={(value) => formatSales(value, isMobile)}
               />
             </Bar>
           </BarChart>

@@ -5,6 +5,8 @@ import Dashboard from './app/Dashboard'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from './Layout'
 import React from 'react'
+import Orders from './app/Orders'
+import OrderDetails from './app/Order-Details'
 
 const App = () => {
   return (
@@ -12,7 +14,9 @@ const App = () => {
       <Routes>
         <Route path="/adminlogin" element={<Login />} />
         <Route path="/" element={<Layout />}>
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route index element={<Dashboard />} />
+          <Route path='/orders' element={<Orders/>}/>
+          <Route path='/details' element={<OrderDetails/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
