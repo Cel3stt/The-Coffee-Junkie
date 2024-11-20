@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Image } from 'lucide-react'
+import { Image, MoreHorizontal  } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -18,8 +18,8 @@ import { Badge } from '@/components/ui/badge'
     Home,
     LineChart,
     ListFilter,
-    MoreHorizontal,
-    Package,
+  
+   
     Package2,
     PanelLeft,
     PlusCircle,
@@ -58,10 +58,20 @@ import { Badge } from '@/components/ui/badge'
 
 const Products = () => {
 
-  
-   
+//   const [products, setProducts] = useState([])
+//   useEffect(() => {
+//     const fetchProduct = async () => {
+//       //---------replace with the actual API----------------
+//       const response = await fetch ('/api/products')
+//       const data = await response.json()
+//       setProducts(data)
+//     }
+//     fetchProduct()
+//   }, [])
 
-
+// const addNewProduct = (newProduct) => {
+//   setProducts([...products, newProduct])
+// }
 
   return (
     <div className='flex min-h-screen w-full flex-col'>
@@ -142,12 +152,18 @@ const Products = () => {
                     Export
                   </span>
                 </Button>
+
+               
+
+                <Link to='/addProducts'>
                 <Button size="sm" className="h-8 gap-1">
                   <PlusCircle className="h-3.5 w-3.5" />
                   <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                     Add Product
                   </span>
                 </Button>
+                </Link>
+
               </div>
             </div>
             <TabsContent value="all">
@@ -202,6 +218,7 @@ const Products = () => {
                         <TableCell className="hidden md:table-cell">
                           2023-07-12 10:42 AM
                         </TableCell>
+
                         <TableCell>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -222,6 +239,7 @@ const Products = () => {
                           </DropdownMenu>
                         </TableCell>
                       </TableRow>
+
                       <TableRow>
                         <TableCell className="hidden sm:table-cell">
                           <Image

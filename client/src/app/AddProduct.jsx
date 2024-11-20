@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { CheckCircle2, AlertCircle } from 'lucide-react'
 
 const AddProduct = () => {
    
@@ -18,7 +20,7 @@ const AddProduct = () => {
         category: '',
         sku: '',
         stock: '',
-        staus:'',
+        status:'',
         lowStockThreshold: '',
         price: '',
         features: [''],
@@ -27,6 +29,9 @@ const AddProduct = () => {
         color: ''
       })
     
+      const [successMessage, setSuccessMessage] = useState('')
+      const [errors, setErrors] = useState({})
+
       const handleFeatureChange = (index, value) => {
         const newFeatures = [...formData.features]
         newFeatures[index] = value
@@ -36,18 +41,61 @@ const AddProduct = () => {
       const addFeature = () => {
         setFormData({...formData, features: [...formData.features, '']})
       }
-   
+
+
+     {/* -------------VALIDATIONS------------- */}
+     const validateForms = () => {
+      let newErrors = {}
+      if (!formData.name.trim()) newErrors.name = 'Product Name is Required!'
+      if (!formData.description.trim()) newErrors.description = 'Description is required!'
+      if (!formData.category) newErrors.category = 'Please Choose a Category'
+      if (!formData.sku.trim()) newErrors.sku = 'SKU is Required!'
+      if (!formData.stock) newErrors.stock = 'Stock is required'
+      if (!formData.status) newErrors.status = 'Status is required'
+      if (!formData.price) newErrors.price = 'Price is required'
+      if (!formData.color.trim()) newErrors.color = 'Color is required'
+      if (!formData.warrantyPeriod.trim()) newErrors.warrantyPeriod = 'Warranty period is required'
+      if (!formData.brand.trim()) newErrors.brand = 'Brand is required'
+
+      setErrors(newErrors)
+      return Object.keys(newErrors).length === 0
+     }
+
+     const handleSave = () => {
+      if (validateForms()) {
+        console.log('Saving product: ', formData)
+        setSuccessMessage('Product Successfully Added')
+      }
+     }
      
   return (
     <div className='flex min-h-screen w-full flex-col'>
         <main className='flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8'>
           <div className="mb-6 flex items-center gap-2">
+
+          <Link to='/products'>
           <Button variant="ghost" size="icon">
           <ArrowLeft className="h-4 w-4" />
           </Button>
+          </Link>
+
            <h1 className="text-2xl font-bold">Create New Products</h1>
            </div>
 
+           {successMessage && (
+              <Alert variant="default" className="mb-4 border-green-500 bg-green-50 text-green-700">
+                <CheckCircle2 className="h-4 w-4" />
+                <AlertTitle className='font-semibold'>Success</AlertTitle>
+                <AlertDescription>{successMessage}</AlertDescription>
+              </Alert>
+            )}
+            {Object.keys(errors).length > 0 && (
+          <Alert variant="default" className="mb-4 border-red-500 bg-red-50 text-red-700">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>Please fill in all required fields.</AlertDescription>
+          </Alert>
+        )}
            
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {/* Product Details */}
@@ -62,6 +110,7 @@ const AddProduct = () => {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   />
+                  {errors.name && <p className='text-red-500 text-sm mt-1'>{errors.name}</p>}
                 </div>
                 <div>
                   <Label htmlFor="description">Description</Label>
@@ -71,6 +120,8 @@ const AddProduct = () => {
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     className="min-h-[100px]"
                   />
+                    {errors.description && <p className='text-red-500 text-sm mt-1'>{errors.description}</p>}
+
                 </div>
                 <div>
                   <Label htmlFor="category">Category</Label>
@@ -84,6 +135,8 @@ const AddProduct = () => {
                       <SelectItem value="accessories">Coffee Tools</SelectItem>
                     </SelectContent>
                   </Select>
+                  {errors.category && <p className='text-red-500 text-sm mt-1'>{errors.category}</p>}
+
                 </div>
                 <div>
                   <Label htmlFor="sku">SKU</Label>
@@ -92,6 +145,8 @@ const AddProduct = () => {
                     value={formData.sku}
                     onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
                   />
+                  {errors.sku && <p className='text-red-500 text-sm mt-1'>{errors.sku}</p>}
+
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -102,6 +157,8 @@ const AddProduct = () => {
                       value={formData.stock}
                       onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
                     />
+                    {errors.stock && <p className='text-red-500 text-sm mt-1'>{errors.stock}</p>}
+
                   </div>
                   <div>
                     <Label htmlFor="lowStockThreshold">Low Stock Threshold</Label>
@@ -111,6 +168,8 @@ const AddProduct = () => {
                       value={formData.lowStockThreshold}
                       onChange={(e) => setFormData({ ...formData, lowStockThreshold: e.target.value })}
                     />
+                     {errors.lowStockThreshold && <p className='text-red-500 text-sm mt-1'>{errors.lowStockThreshold}</p>}
+
                   </div>
                 </div>
                 <div>
@@ -120,6 +179,8 @@ const AddProduct = () => {
                     value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                   />
+                  {errors.price && <p className='text-red-500 text-sm mt-1'>{errors.price}</p>}
+
                 </div>
 
                 <div>
@@ -129,20 +190,24 @@ const AddProduct = () => {
                     value={formData.color}
                     onChange={(e) => setFormData({ ...formData, color: e.target.value })}
                   />
+                  {errors.color && <p className='text-red-500 text-sm mt-1'>{errors.color}</p>}
+
                 </div>
 
                 <div>
                   <Label htmlFor="status">Status</Label>
-                  <Select onValueChange={(value) => setFormData({ ...formData, category: value })}>
+                  <Select onValueChange={(value) => setFormData({ ...formData, status: value })}>
                     <SelectTrigger>
                       <SelectValue placeholder="" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="active">Active</SelectItem>
                       <SelectItem value="archive">Archive</SelectItem>
-                      <SelectItem value="draft">Draft</SelectItem>
+                      <SelectItem lvalue="draft">Draft</SelectItem>
                     </SelectContent>
                   </Select>
+                  {errors.status && <p className='text-red-500 text-sm mt-1'>{errors.status}</p>}
+
                 </div>
               </div>
             </div>
@@ -198,6 +263,8 @@ const AddProduct = () => {
                     value={formData.warrantyPeriod}
                     onChange={(e) => setFormData({ ...formData, warrantyPeriod: e.target.value })}
                   />
+                   {errors.warrantyPeriod && <p className='text-red-500 text-sm mt-1'>{errors.warrantyPeriod}</p>}
+
                 </div>
                 <div>
                   <Label htmlFor="brand">Brand/Manufacturer</Label>
@@ -207,6 +274,8 @@ const AddProduct = () => {
                     value={formData.brand}
                     onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
                   />
+                 {errors.brand && <p className='text-red-500 text-sm mt-1'>{errors.brand}</p>}
+
                 </div>
                 
               </div>
@@ -215,7 +284,7 @@ const AddProduct = () => {
 
                 <div className="mt-2 flex justify-end gap-4">
                     <Button variant="outline">Discard</Button>
-                    <Button>Save Product</Button>
+                    <Button onClick={handleSave}>Save Product</Button>
                 </div>
           </div>
         </div>

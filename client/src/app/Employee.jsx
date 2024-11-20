@@ -100,9 +100,23 @@ const Employee = () => {
                             </div>
                         </div>
 
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                aria-haspopup="true"
+                                size="icon"
+                                variant="ghost"
+                              >
+                                <MoreHorizontal className="h-4 w-4" />
+                                <span className="sr-only">Toggle menu</span>
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                              <DropdownMenuItem>Edit</DropdownMenuItem>
+                              <DropdownMenuItem>Delete</DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                  </div>
                  <div className="mt-4 py-5 px-2 space-y-2">
             <div className="flex justify-between text-sm">
