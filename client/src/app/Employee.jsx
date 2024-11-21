@@ -112,9 +112,10 @@ const Employee = () => {
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                          
                               <DropdownMenuItem>Edit</DropdownMenuItem>
                               <DropdownMenuItem>Delete</DropdownMenuItem>
+                              <DropdownMenuItem>View</DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
                  </div>

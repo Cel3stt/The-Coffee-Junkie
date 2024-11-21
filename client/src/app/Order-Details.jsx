@@ -9,18 +9,7 @@ import {
     Copy,
     CreditCard,
     File,
-    Home,
-    LineChart,
-    ListFilter,
-    MoreVertical,
-    Package,
-    Package2,
-    PanelLeft,
-    Search,
-    Settings,
-    ShoppingCart,
-    Truck,
-    Users2,
+    ArrowLeft
   } from "lucide-react"
 import {
     Card,
@@ -36,18 +25,36 @@ const OrderDetails = () => {
     <div className='flex min-h-screen w-full flex-col'>
        <main className='flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8'>
 
-       <div className="flex flex-col md:flex-row items-center justify-between">
-         <h1 className="text-2xl font-bold">Order Details</h1>
-         
-         <Button
-                    size="sm"
-                    variant="outline"
-                    className="h-7 gap-1 text-sm"
-                  >
-                    <File className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only">Export as PDF</span>
-                  </Button>
-       </div>
+      
+
+          <div className='flex justify-between'>
+              <div className="mb-6 flex items-center gap-2">
+
+                <Link to='/orders'>
+                <Button variant="ghost" size="icon">
+                <ArrowLeft className="h-4 w-4" />
+                </Button>
+                </Link>
+
+                <h1 className="text-2xl font-bold">Order Details</h1>
+                <div className="div">
+                  
+                </div>
+            </div>
+            
+            <div>
+            <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-7 gap-1 text-sm"
+                        >
+                          <File className="h-3.5 w-3.5" />
+                          <span className="sr-only sm:not-sr-only">Export as PDF</span>
+                        </Button>
+            </div>
+
+
+          </div>
 
 
 

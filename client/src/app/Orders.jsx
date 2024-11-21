@@ -151,12 +151,15 @@ const Orders = () => {
                 <p className="font-semibold">₱ {order.amount}</p>
               </div>
               <div className="mt-4 text-right">
-                <Button
+              
+              <Link to='/details'>
+              <Button
                   variant="outline"
                   className="w-full mt-4 text-gray-800 font-normal"
                 >
                   View Details
                 </Button>
+              </Link>
               </div>
             </CardContent>
           </Card>
