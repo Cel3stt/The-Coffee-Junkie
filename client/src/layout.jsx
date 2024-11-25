@@ -20,7 +20,7 @@ const navItems = [
   { to: "/orders", icon: ShoppingCart, label: "Orders", badge: "6" },
   { to: "/products", icon: Package, label: "Products" },
   { to: "/employee", icon: Users, label: "Users" },
-  { to: "#", icon: LineChart, label: "Analytics" },
+  { to: "/return-refund", icon: LineChart, label: "Return/Refund" },
 ]
 
 const SidebarContent = () => (

@@ -11,6 +11,8 @@ import Products from './app/Products'
 import AddProduct from './app/AddProduct'
 import Employee from './app/Employee'
 import ProductDetails from './app/ProductDetails'
+import ReturnRefund from './app/Return-Refund'
+import RequestDetails from './app/Request-Details'
 
 const App = () => {
   return (
@@ -23,8 +25,10 @@ const App = () => {
           <Route path='/details' element={<OrderDetails/>}/>
           <Route path='/products' element={<Products/>}/>
           <Route path='/addProducts' element={<AddProduct/>}/>
-          <Route path = 'product-details' element={<ProductDetails/>}/>
+          <Route path = '/product-details' element={<ProductDetails/>}/>
           <Route path='/employee' element={<Employee/>}/>
+          <Route path='/return-refund' element={<ReturnRefund/>}/>
+          <Route path='/request' element={<RequestDetails/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
