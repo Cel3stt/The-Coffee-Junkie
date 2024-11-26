@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, Outlet } from "react-router-dom"
 import { Bell, CircleUser, Home, LineChart, Menu, Package, Package2, ShoppingCart, Users } from 'lucide-react'
 
-import { Badge } from "@/components/ui/badge"
+import { Badge, badgeVariants } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -17,7 +17,7 @@ import Notifications from './components/Notifications'
 
 const navItems = [
   { to: "/", icon: Home, label: "Dashboard" },
-  { to: "/orders", icon: ShoppingCart, label: "Orders", badge: "6" },
+  { to: "/orders", icon: ShoppingCart, label: "Orders",},
   { to: "/products", icon: Package, label: "Products" },
   { to: "/employee", icon: Users, label: "Users" },
   { to: "/return-refund", icon: LineChart, label: "Return/Refund" },

@@ -207,7 +207,7 @@ const Products = () => {
                                 Laser Lemonade Machine
                               </TableCell>
                               <TableCell>
-                                <Badge variant="draft">Draft</Badge>
+                                <Badge variant="draft"></Badge>
                               </TableCell>
                               <TableCell className="hidden md:table-cell">
                                 $499.99
@@ -254,7 +254,7 @@ const Products = () => {
                                 Hypernova Headphones
                               </TableCell>
                               <TableCell>
-                                <Badge variant="archive">Archive</Badge>
+                                <Badge variant="archive"></Badge>
                               </TableCell>
                               <TableCell className="hidden md:table-cell">
                                 $129.99
@@ -299,7 +299,7 @@ const Products = () => {
                                 AeroGlow Desk Lamp
                               </TableCell>
                               <TableCell>
-                                <Badge variant="active">Active</Badge>
+                                <Badge variant="active"></Badge>
                               </TableCell>
                               <TableCell className="hidden md:table-cell">
                                 $39.99
@@ -344,7 +344,7 @@ const Products = () => {
                                 TechTonic Energy Drink
                               </TableCell>
                               <TableCell>
-                                <Badge variant="draft">Draft</Badge>
+                                <Badge variant="draft"></Badge>
                               </TableCell>
                               <TableCell className="hidden md:table-cell">
                                 $2.99
@@ -389,7 +389,7 @@ const Products = () => {
                                 Gamer Gear Pro Controller
                               </TableCell>
                               <TableCell>
-                                <Badge variant="active">Active</Badge>
+                                <Badge variant="active"></Badge>
                               </TableCell>
                               <TableCell className="hidden md:table-cell">
                                 $59.99
@@ -434,7 +434,7 @@ const Products = () => {
                                 Luminous VR Headset
                               </TableCell>
                               <TableCell>
-                                <Badge variant="active">Active</Badge>
+                                <Badge variant="active"></Badge>
                               </TableCell>
                               <TableCell className="hidden md:table-cell">
                                 $199.99

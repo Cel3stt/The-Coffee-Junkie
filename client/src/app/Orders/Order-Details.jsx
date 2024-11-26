@@ -63,9 +63,7 @@ const OrderDetails = () => {
         <div className="space-y-2">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-medium">Order: ORD001</h2>
-          <Badge variant='processing'>
-            Processing
-          </Badge>
+          <Badge variant='processing'></Badge>
         </div>
         <p className="text-sm text-muted-foreground">Date: November 27, 2024</p>
       </div>

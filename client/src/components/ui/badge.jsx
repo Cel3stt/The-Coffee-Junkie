@@ -44,12 +44,29 @@ const badgeVariants = cva(
   }
 )
 
-function Badge({
-  className,
-  variant,
-  ...props
-}) {
-  return (<div className={cn(badgeVariants({ variant }), className)} {...props} />);
-}
+const badgeLabels = {
+  default: "Default",
+  secondary: "Secondary",
+  destructive: "Destructive",
+  outline: "Outline",
+  processing: "Processing",
+  shipped: "Shipped",
+  delivered: "Delivered",
+  active: "Active",
+  draft: "Draft",
+  archive: "Archive",
+  pending: "Pending",
+  approved: "Approved",
+  rejected: "Rejected",
+  completed: "Completed",
+};
 
+
+function Badge({ className, variant, ...props }) {
+  return (
+    <div className={cn(badgeVariants({ variant }), className)} {...props}>
+      {badgeLabels[variant] || "Unknown"}
+    </div>
+  );
+}
 export { Badge, badgeVariants }

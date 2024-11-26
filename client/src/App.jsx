@@ -5,15 +5,16 @@ import Dashboard from './app/Dashboard'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from './Layout'
 import React from 'react'
-import Orders from './app/Orders'
-import OrderDetails from './app/Order-Details'
-import Products from './app/Products'
-import AddProduct from './app/AddProduct'
-import Employee from './app/Employee'
-import ProductDetails from './app/ProductDetails'
-import ReturnRefund from './app/Return-Refund'
-import RequestDetails from './app/Request-Details'
-
+import Orders from './app/Orders/Orders'
+import OrderDetails from './app/Orders/Order-Details'
+import AddProduct from './app/Products/AddProduct'
+import Employee from './app/Employee/Employee'
+import ProductDetails from './app/Products/ProductDetails'
+import ReturnRefund from './app/Return/Return-Refund'
+import RequestDetails from './app/Return/Request-Details'
+import Products from './app/Products/Products'
+import AdminAccountSettings from './app/AdminSetting'
+import EmployeeSetting from './app/Employee/EmployeeSetting'
 const App = () => {
   return (
     <BrowserRouter>
@@ -29,6 +30,8 @@ const App = () => {
           <Route path='/employee' element={<Employee/>}/>
           <Route path='/return-refund' element={<ReturnRefund/>}/>
           <Route path='/request' element={<RequestDetails/>}/>
+          <Route path='/settings' element={<AdminAccountSettings/>}/>
+          <Route path='/employeeAccount' element={<EmployeeSetting/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

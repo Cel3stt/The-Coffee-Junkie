@@ -27,7 +27,7 @@ const Login = () => {
     axios.post('http://localhost:3000/auth/adminlogin', values)
     .then(res => 
     {
-      navigate('/dashboard')
+      navigate('/')
     }
     )
     .catch(err => console.log(err))
