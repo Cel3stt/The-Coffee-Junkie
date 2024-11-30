@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
-import { Image } from 'lucide-react'
+import { FlaskRound, Image } from 'lucide-react'
 
 import { ArrowLeft, Upload } from 'lucide-react'
 
@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea"
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { CheckCircle2, AlertCircle } from 'lucide-react'
+import axios from 'axios'
 
 const AddProduct = () => {
    
@@ -29,44 +30,58 @@ const AddProduct = () => {
         color: ''
       })
     
-      const [successMessage, setSuccessMessage] = useState('')
-      const [errors, setErrors] = useState({})
+      // const [successMessage, setSuccessMessage] = useState('')
+      // const [errors, setErrors] = useState({})
 
-      const handleFeatureChange = (index, value) => {
-        const newFeatures = [...formData.features]
-        newFeatures[index] = value
-        setFormData({...formData, features: newFeatures})
-      }
+      // const handleFeatureChange = (index, value) => {
+      //   const newFeatures = [...formData.features]
+      //   newFeatures[index] = value
+      //   setFormData({...formData, features: newFeatures})
+      // }
 
-      const addFeature = () => {
-        setFormData({...formData, features: [...formData.features, '']})
-      }
+      // const addFeature = () => {
+      //   setFormData({...formData, features: [...formData.features, '']})
+      // }
 
 
-     {/* -------------VALIDATIONS------------- */}
-     const validateForms = () => {
-      let newErrors = {}
-      if (!formData.name.trim()) newErrors.name = 'Product Name is Required!'
-      if (!formData.description.trim()) newErrors.description = 'Description is required!'
-      if (!formData.category) newErrors.category = 'Please Choose a Category'
-      if (!formData.sku.trim()) newErrors.sku = 'SKU is Required!'
-      if (!formData.stock) newErrors.stock = 'Stock is required'
-      if (!formData.status) newErrors.status = 'Status is required'
-      if (!formData.price) newErrors.price = 'Price is required'
-      if (!formData.color.trim()) newErrors.color = 'Color is required'
-      if (!formData.warrantyPeriod.trim()) newErrors.warrantyPeriod = 'Warranty period is required'
-      if (!formData.brand.trim()) newErrors.brand = 'Brand is required'
+    //  {/* -------------VALIDATIONS------------- */}
+    //  const validateForms = () => {
+    //   let newErrors = {}
+    //   if (!formData.name.trim()) newErrors.name = 'Product Name is Required!'
+    //   if (!formData.description.trim()) newErrors.description = 'Description is required!'
+    //   if (!formData.category) newErrors.category = 'Please Choose a Category'
+    //   if (!formData.sku.trim()) newErrors.sku = 'SKU is Required!'
+    //   if (!formData.stock) newErrors.stock = 'Stock is required'
+    //   if (!formData.status) newErrors.status = 'Status is required'
+    //   if (!formData.price) newErrors.price = 'Price is required'
+    //   if (!formData.color.trim()) newErrors.color = 'Color is required'
+    //   if (!formData.warrantyPeriod.trim()) newErrors.warrantyPeriod = 'Warranty period is required'
+    //   if (!formData.brand.trim()) newErrors.brand = 'Brand is required'
 
-      setErrors(newErrors)
-      return Object.keys(newErrors).length === 0
+    
+
+    //   setErrors(newErrors)
+    //   return Object.keys(newErrors).length === 0
+    //  }
+
+    //  const navigate = useNavigate()
+     
+     const handleChange  = (e) => {
+      const name = e.target.name;
+      const value =  e.target.value
+      setFormData(values => ({...values, [name]: value}));
+     }
+   
+
+     const handleSubmit = (e) => {
+      e.preventDefault()
+      axios.post('http://localhost:3000/api/products', formData).then(function(response){
+        console.log(response)
+      })
      }
 
-     const handleSave = () => {
-      if (validateForms()) {
-        console.log('Saving product: ', formData)
-        setSuccessMessage('Product Successfully Added')
-      }
-     }
+   
+
      
   return (
     <div className='flex min-h-screen w-full flex-col'>
@@ -81,7 +96,7 @@ const AddProduct = () => {
 
            <h1 className="text-2xl font-bold">Create New Products</h1>
            </div>
-
+{/* 
            {successMessage && (
               <Alert variant="default" className="mb-4 border-green-500 bg-green-50 text-green-700">
                 <CheckCircle2 className="h-4 w-4" />
@@ -95,7 +110,7 @@ const AddProduct = () => {
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>Please fill in all required fields.</AlertDescription>
           </Alert>
-        )}
+        )} */}
            
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {/* Product Details */}
@@ -107,20 +122,22 @@ const AddProduct = () => {
                   <Label htmlFor="name">Name</Label>
                   <Input
                     id="name"
+                    name = "name"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={handleChange}
                   />
-                  {errors.name && <p className='text-red-500 text-sm mt-1'>{errors.name}</p>}
+                  {/* {errors.name && <p className='text-red-500 text-sm mt-1'>{errors.name}</p>} */}
                 </div>
                 <div>
                   <Label htmlFor="description">Description</Label>
                   <Textarea
+                    name = "description"
                     id="description"
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     className="min-h-[100px]"
                   />
-                    {errors.description && <p className='text-red-500 text-sm mt-1'>{errors.description}</p>}
+                    {/* {errors.description && <p className='text-red-500 text-sm mt-1'>{errors.description}</p>} */}
 
                 </div>
                 <div>
@@ -135,62 +152,67 @@ const AddProduct = () => {
                       <SelectItem value="accessories">Coffee Tools</SelectItem>
                     </SelectContent>
                   </Select>
-                  {errors.category && <p className='text-red-500 text-sm mt-1'>{errors.category}</p>}
+                  {/* {errors.category && <p className='text-red-500 text-sm mt-1'>{errors.category}</p>} */}
 
                 </div>
                 <div>
                   <Label htmlFor="sku">SKU</Label>
                   <Input
+                    name = "sku"
                     id="sku"
                     value={formData.sku}
                     onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
                   />
-                  {errors.sku && <p className='text-red-500 text-sm mt-1'>{errors.sku}</p>}
+                  {/* {errors.sku && <p className='text-red-500 text-sm mt-1'>{errors.sku}</p>} */}
 
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="stock">Stock</Label>
                     <Input
+                    name = "stock"
                       id="stock"
                       type="number"
                       value={formData.stock}
                       onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
                     />
-                    {errors.stock && <p className='text-red-500 text-sm mt-1'>{errors.stock}</p>}
+                    {/* {errors.stock && <p className='text-red-500 text-sm mt-1'>{errors.stock}</p>} */}
 
                   </div>
                   <div>
                     <Label htmlFor="lowStockThreshold">Low Stock Threshold</Label>
                     <Input
+                     name = "lowStockThreshold"
                       id="lowStockThreshold"
                       type="number"
                       value={formData.lowStockThreshold}
                       onChange={(e) => setFormData({ ...formData, lowStockThreshold: e.target.value })}
                     />
-                     {errors.lowStockThreshold && <p className='text-red-500 text-sm mt-1'>{errors.lowStockThreshold}</p>}
+                     {/* {errors.lowStockThreshold && <p className='text-red-500 text-sm mt-1'>{errors.lowStockThreshold}</p>} */}
 
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="price">Price</Label>
                   <Input
+                    name = "price"
                     id="price"
                     value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                   />
-                  {errors.price && <p className='text-red-500 text-sm mt-1'>{errors.price}</p>}
+                  {/* {errors.price && <p className='text-red-500 text-sm mt-1'>{errors.price}</p>} */}
 
                 </div>
 
                 <div>
                   <Label htmlFor="color">Color</Label>
                   <Input
+                    name = "color"
                     id="color"
                     value={formData.color}
                     onChange={(e) => setFormData({ ...formData, color: e.target.value })}
                   />
-                  {errors.color && <p className='text-red-500 text-sm mt-1'>{errors.color}</p>}
+                  {/* {errors.color && <p className='text-red-500 text-sm mt-1'>{errors.color}</p>} */}
 
                 </div>
 
@@ -206,7 +228,7 @@ const AddProduct = () => {
                       <SelectItem lvalue="draft">Draft</SelectItem>
                     </SelectContent>
                   </Select>
-                  {errors.status && <p className='text-red-500 text-sm mt-1'>{errors.status}</p>}
+                  {/* {errors.status && <p className='text-red-500 text-sm mt-1'>{errors.status}</p>} */}
 
                 </div>
               </div>
@@ -234,15 +256,18 @@ const AddProduct = () => {
             <div className="rounded-lg border bg-white p-6">
               <h2 className="mb-4 text-lg font-semibold">Features</h2>
               <div className="space-y-4">
-                {formData.features.map((feature, index) => (
+                {/* {formData.features.map((feature, index) => (
                   <Input
                     key={index}
                     placeholder={`Feature ${index + 1}`}
                     value={feature}
                     onChange={(e) => handleFeatureChange(index, e.target.value)}
                   />
-                ))}
-                <Button variant="outline" onClick={addFeature}>
+                ))} */}
+                {/* <Button variant="outline" onClick={addFeature}>
+                  Add Feature
+                </Button> */}
+                <Button variant="outline">
                   Add Feature
                 </Button>
               </div>
@@ -263,7 +288,7 @@ const AddProduct = () => {
                     value={formData.warrantyPeriod}
                     onChange={(e) => setFormData({ ...formData, warrantyPeriod: e.target.value })}
                   />
-                   {errors.warrantyPeriod && <p className='text-red-500 text-sm mt-1'>{errors.warrantyPeriod}</p>}
+                   {/* {errors.warrantyPeriod && <p className='text-red-500 text-sm mt-1'>{errors.warrantyPeriod}</p>} */}
 
                 </div>
                 <div>
@@ -274,7 +299,7 @@ const AddProduct = () => {
                     value={formData.brand}
                     onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
                   />
-                 {errors.brand && <p className='text-red-500 text-sm mt-1'>{errors.brand}</p>}
+                 {/* {errors.brand && <p className='text-red-500 text-sm mt-1'>{errors.brand}</p>} */}
 
                 </div>
                 
@@ -284,13 +309,13 @@ const AddProduct = () => {
 
                 <div className="mt-2 flex justify-end gap-4">
                     <Button variant="outline">Discard</Button>
-                    <Button onClick={handleSave}>Save Product</Button>
+                    <Button onClick={handleSubmit}>Save Product</Button>
                 </div>
           </div>
         </div>
 
     
-    </main>
+        </main>
     </div>
   )
 }
