@@ -21,16 +21,17 @@ import ShoppingCheckout from './pages/admin-view/shopping-view/Checkout'
 import ShoppingAccount from './pages/admin-view/shopping-view/Account'
 import ShoppingListing from './pages/admin-view/shopping-view/Listing'
 import AuthLayout from './components/auth/Layout'
-import AuthLogin from './components/auth/Login'
-import AuthRegister from './components/auth/Register'
+import AuthLogin from './pages/auth/Login'
+import AuthRegister from './pages/auth/Register'
 import CheckAuth from './components/common/Check-Auth'
+import { useSelector } from 'react-redux'
 
 
 
 function App() {
 
-  const isAuthenticated = false;
-  const user = null;
+
+  const {user, isAuthenticated} = useSelector(state => state.auth)
   return (
     <Routes>
       <Route path='/auth' element={
