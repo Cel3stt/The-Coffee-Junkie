@@ -24,14 +24,31 @@ import AuthLayout from './components/auth/Layout'
 import AuthLogin from './pages/auth/Login'
 import AuthRegister from './pages/auth/Register'
 import CheckAuth from './components/common/Check-Auth'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { checkAuth } from './store/auth-slice'
+import { Skeleton } from './components/ui/skeleton'
 
 
 
 function App() {
 
 
-  const {user, isAuthenticated} = useSelector(state => state.auth)
+  const {user, isAuthenticated, isLoading} = useSelector(state => state.auth)
+  const dispatch = useDispatch()
+  
+  
+
+  useEffect(() => {
+    dispatch(checkAuth())
+  }, [dispatch])
+
+  if(isLoading) return <Skeleton className='w-full h-[400px]'></Skeleton>
+
+
+  console.log(isLoading, user)
+
+
   return (
     <Routes>
       <Route path='/auth' element={

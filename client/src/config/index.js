@@ -1,3 +1,5 @@
+import { Home, LineChart, Package, ShoppingCart, Users } from "lucide-react"
+
 export const registerFormControls = [
     {
         name: "userName",
@@ -41,4 +43,37 @@ export const loginFormControls = [
         type: 'password'
     },
 
+]
+
+export const adminSidebarMenuItems = [
+    {
+        id: 'dashboard',
+        label : "Dashboard",
+        path: '/admin/dashboard',
+        icon: Home
+    },
+    {
+        id: 'orders',
+        label : "Orders",
+        path: '/admin/orders',
+        icon: ShoppingCart
+    },
+    {
+        id: 'products',
+        label : "Products",
+        path: '/admin/products',
+        icon: Package
+    },{
+        id: 'users',
+        label : "Users",
+        path: '/admin/employee',
+        icon: Users
+        
+    },
+    {
+        id: 'return-refund',
+        label : "ReturnRefund",
+        path: '/admin/Return / Refund',
+        icon: LineChart
+    }
 ]
