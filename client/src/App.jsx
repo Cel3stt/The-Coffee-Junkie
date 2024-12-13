@@ -11,7 +11,7 @@ import Employee from './pages/admin-view/Employee/Employee'
 import ProductDetails from './pages/admin-view/Products/ProductDetails'
 import ReturnRefund from './pages/admin-view/Return/Return-Refund'
 import RequestDetails from './pages/admin-view/Return/Request-Details'
-import Products from './pages/admin-view/Products/Products'
+
 import AdminAccountSettings from './pages/admin-view/AdminSetting'
 import EmployeeSetting from './pages/admin-view/Employee/EmployeeSetting'
 import ShoppingLayout from './components/shopping-view/Layout'
@@ -28,6 +28,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { checkAuth } from './store/auth-slice'
 import { Skeleton } from './components/ui/skeleton'
+import AdminProducts from './pages/admin-view/Products/Products'
 
 
 
@@ -68,7 +69,7 @@ function App() {
         <Route path ='dashboard' element={<Dashboard />} />
         <Route path='orders' element={<Orders/>}/>
         <Route path='details' element={<OrderDetails/>}/>
-        <Route path='products' element={<Products/>}/>
+        <Route path='products' element={<AdminProducts/>}/>
         <Route path='addProducts' element={<AddProduct/>}/>
         <Route path='product-details' element={<ProductDetails/>}/>
         <Route path='employee' element={<Employee/>}/>
