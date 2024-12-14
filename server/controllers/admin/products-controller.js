@@ -155,11 +155,11 @@ const editProduct = async (req, res) => {
     findProduct.description = description || findProduct.description;
     findProduct.category = category || findProduct.category;
     findProduct.brand = brand || findProduct.brand;
-    findProduct.price = price || findProduct.price;
+    findProduct.price = price === '' ? 0 : price|| findProduct.price;
     findProduct.sku = sku || findProduct.sku;
     findProduct.lowStockThreshold =
       lowStockThreshold || findProduct.lowStockThreshold;
-    findProduct.salePrice = salePrice || findProduct.salePrice;
+    findProduct.salePrice = salePrice === '' ? 0 : salePrice || findProduct.salePrice;
     findProduct.totalStock = totalStock || findProduct.totalStock;
     findProduct.features = features || findProduct.features;
     findProduct.warrantyPeriod = warrantyPeriod || findProduct.warrantyPeriod;

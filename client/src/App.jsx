@@ -6,7 +6,6 @@ import { Routes, Route } from 'react-router-dom'
 import AdminLayout from './components/admin-view/layout'
 import Orders from './pages/admin-view/Orders/Orders'
 import OrderDetails from './pages/admin-view/Orders/Order-Details'
-import AddProduct from './pages/admin-view/Products/AddProduct'
 import Employee from './pages/admin-view/Employee/Employee'
 import ProductDetails from './pages/admin-view/Products/ProductDetails'
 import ReturnRefund from './pages/admin-view/Return/Return-Refund'
@@ -29,6 +28,7 @@ import { useEffect } from 'react'
 import { checkAuth } from './store/auth-slice'
 import { Skeleton } from './components/ui/skeleton'
 import AdminProducts from './pages/admin-view/Products/Products'
+import ShoppingHeader from './components/shopping-view/Header'
 
 
 
@@ -70,7 +70,7 @@ function App() {
         <Route path='orders' element={<Orders/>}/>
         <Route path='details' element={<OrderDetails/>}/>
         <Route path='products' element={<AdminProducts/>}/>
-        <Route path='addProducts' element={<AddProduct/>}/>
+        
         <Route path='product-details' element={<ProductDetails/>}/>
         <Route path='employee' element={<Employee/>}/>
         <Route path='return-refund' element={<ReturnRefund/>}/>
@@ -86,6 +86,7 @@ function App() {
         </CheckAuth>
       }>
         <Route path='home' element={<ShoppingHome/>}/>
+        <Route path='header' element={<ShoppingHeader/>}/>
         <Route path='checkout' element={<ShoppingCheckout/>}/>
         <Route path='account' element={<ShoppingAccount/>}/>
         <Route path='listing' element={<ShoppingListing/>}/>

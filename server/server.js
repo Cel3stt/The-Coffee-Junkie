@@ -39,6 +39,6 @@ app.use(
 app.use(cookieParser());
 app.use(express.json())
 app.use('/api/auth', authRouter)
-app.use('/api/admin/addProducts', adminProductRouter)
+app.use('/api/admin/products', adminProductRouter)
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))

@@ -83,77 +83,106 @@ export const addProductFormControls = [
   {
     name: "title",
     label: "Title",
-    placeholder: "Enter product name",
+    type: "text",
+    placeholder: "Enter product title",
     componentType: "input",
-    type: "text"
+    required: true,
   },
   {
     name: "description",
     label: "Description",
+    type: "text",
     placeholder: "Enter product description",
-    componentType: "textarea"
+    componentType: "textarea",
   },
   {
     name: "category",
     label: "Category",
+    type: "select",
+    placeholder: "Select category",
     componentType: "select",
     options: [
-      { id: "espresso-machines", label: "Espresso Machines" },
-      { id: "grinders", label: "Coffee Grinders" },
-      { id: "accessories", label: "Accessories" },
-    ]
-  },
-  {
-    name: "sku",
-    label: "SKU",
-    placeholder: "Enter SKU",
-    componentType: "input",
-    type: "text"
-  },
-  {
-    name:  "totalStock",
-    label: "Total Stock",
-    placeholder: "Enter stock quantity",
-    componentType: "input",
-    type: "number"
-  },
-  {
-    name: "lowStockThreshold",
-    label: "Low Stock Threshold",
-    placeholder: "Enter threshold",
-    componentType: "input",
-    type: "number"
+      { id: "electronics", label: "Electronics" },
+      { id: "clothing", label: "Clothing" },
+      { id: "books", label: "Books" },
+    ],
   },
   {
     name: "price",
     label: "Price",
+    type: "number",
     placeholder: "Enter price",
     componentType: "input",
-    type: "number"
+    required: true,
   },
   {
     name: "salePrice",
     label: "Sale Price",
-    placeholder: "Enter price",
+    type: "number",
+    placeholder: "Enter sale price",
     componentType: "input",
-    type: "number"
   },
   {
-    name: "color",
-    label: "Color",
-    placeholder: "Enter color",
+    name: "sku",
+    label: "SKU",
+    type: "text",
+    placeholder: "Enter SKU",
     componentType: "input",
-    type: "text"
+  },
+  {
+    name: "totalStock",
+    label: "Total Stock",
+    type: "number",
+    placeholder: "Enter total stock",
+    componentType: "input",
+    required: true,
+  },
+  {
+    name: "brand",
+    label: "Brand",
+    type: "text",
+    placeholder: "Enter brand name",
+    componentType: "input",
   },
   {
     name: "status",
     label: "Status",
+    type: "select",
     placeholder: "Select status",
     componentType: "select",
     options: [
       { id: "draft", label: "Draft" },
       { id: "active", label: "Active" },
-      { id: "archived", label: "Archived" }
-    ]
-  }
+    ],
+  },
+  {
+    name: "color",
+    label: "Color",
+    type: "text",
+    placeholder: "Enter color",
+    componentType: "input",
+  },
+  {
+    name: "lowStockThreshold",
+    label: "Low Stock Threshold",
+    type: "number",
+    placeholder: "Enter low stock threshold",
+    componentType: "input",
+  },
+  {
+    name: "warrantyPeriod",
+    label: "Warranty Period",
+    type: "text",
+    placeholder: "Enter warranty period",
+    componentType: "input",
+  },
 ];
+
+export const shoppingViewMenuItems = [
+  {
+    id: 'home', 
+    label: "Home",
+    path : '/shop/home'
+  },
+  
+]

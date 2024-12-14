@@ -13,11 +13,15 @@ function ProductImageUpload({
   uploadedImageUrl,
   setUploadedImageUrl,
   setImageLoadingState,
-  setFormData,
+  isEditMode,
+  isCustomStyling = false,
 }) {
   const inputRef = useRef(null);
+
+  console.log(isEditMode, "isEditMode");
+
   function handleImageFileChange(event) {
-    console.log(event.target.files);
+    console.log(event.target.files, "event.target.files");
     const selectedFile = event.target.files?.[0];
     console.log(selectedFile);
 
@@ -41,22 +45,19 @@ function ProductImageUpload({
     }
   }
 
-  console.log(imageFile);
-
   async function uploadImageToCloudinary() {
-    setImageLoadingState(true)
+    setImageLoadingState(true);
     const data = new FormData();
     data.append("my_file", imageFile);
     const response = await axios.post(
-      "http://localhost:3000/api/admin/addProducts/upload-image",
+      "http://localhost:3000/api/admin/products/upload-image",
       data
     );
     console.log(response, "response");
+
     if (response?.data?.success) {
-        const imageUrl = response.data.result.url;
-        setUploadedImageUrl(imageUrl);
-        setFormData(prev => ({...prev, image: imageUrl}));
-        setImageLoadingState(false)
+      setUploadedImageUrl(response.data.result.url);
+      setImageLoadingState(false);
     }
   }
 
@@ -66,16 +67,16 @@ function ProductImageUpload({
 
 
   return (
-    <div className="rounded-lg border bg-white p-6">
-      <h2 className="mb-2 text-lg font-semibold">Product Image</h2>
-      <p className="mb-4 text-sm text-gray-500">
-        Drag & drop or click to upload image
-      </p>
-
+    <div
+      className={`w-full  mt-4 ${isCustomStyling ? "" : "max-w-md mx-auto"}`}
+    >
+      
       <div
         onDragOver={handleDragOver}
         onDrop={handleDrop}
-        className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-8"
+        className={`${
+          isEditMode ? "opacity-60" : ""
+        } border-2 border-dashed rounded-lg p-4`}
       >
         <Input
           id="image-upload"
@@ -83,32 +84,38 @@ function ProductImageUpload({
           className="hidden"
           ref={inputRef}
           onChange={handleImageFileChange}
+          disabled={isEditMode}
         />
-
         {!imageFile ? (
           <Label
             htmlFor="image-upload"
-            className="flex flex-col items-center justify-center h-32 cursor-pointer"
+            className={`${
+              isEditMode ? "cursor-not-allowed" : ""
+            } flex flex-col items-center justify-center h-32 cursor-pointer`}
           >
-            <UploadCloudIcon className="w-10 h-10 text-muted-foreground mb-2"></UploadCloudIcon>
+            <UploadCloudIcon className="w-10 h-10 text-muted-foreground mb-2" />
             <span>Drag & drop or click to upload image</span>
           </Label>
+        ) : imageLoadingState ? (
+          <Skeleton className="h-10 bg-gray-100" />
         ) : (
-         
-          <div className="flex items-center justify-between w-full gap-4 px-4">
+          <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <FileIcon className="w-8 h-8 text-primary mr-2" />
-              <p className="text-sm font-medium">{imageFile.name}</p>
+              <FileIcon className="w-8 text-primary mr-2 h-8" />
             </div>
-
-            <Button variant="ghost" size="icon" onClick={handleRemoveImage}>
-              <XIcon className="w-5 h-5" />
+            <p className="text-sm font-medium">{imageFile.name}</p>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-muted-foreground hover:text-foreground"
+              onClick={handleRemoveImage}
+            >
+              <XIcon className="w-4 h-4" />
               <span className="sr-only">Remove File</span>
             </Button>
           </div>
         )}
       </div>
-      <p className="mt-3 text-sm text-gray-500">Supported formats: JPEG, PNG</p>
     </div>
   );
 }

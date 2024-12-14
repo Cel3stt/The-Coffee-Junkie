@@ -1,230 +1,280 @@
-import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
-import { File, ListFilter, PlusCircle, MoreHorizontal } from "lucide-react";
-
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-import React, { Fragment } from "react";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
+import React, { useEffect, useState, Fragment } from "react";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllProducts } from "@/store/admin/products-slice";
+import {
+  fetchAllProducts,
+  deleteProduct,
+  editProduct,
+  addNewProduct,
+} from "@/store/admin/products-slice";
+import CommonForm from "@/components/common/Form";
+import ProductImageUpload from "@/components/admin-view/Image-upload";
+import AdminProductTile from "@/components/admin-view/Product-tile";
+import { useToast } from "@/hooks/use-toast";
+import { addProductFormControls } from "@/config";
 
+
+
+  import { AlertDialog,  AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle, } from "@/components/ui/alert-dialog";
+
+    
 const initialFormData = {
-  image: '',
-  title: '',
-  description: '',
-  category: '',
-  brand: '',
-  price: '',
-  sku: '',
-  color: '',
-  lowStockThreshold: '',
-  salePrice: '',
-  totalStock: '',
+  image: "",
+  title: "",
+  description: "",
+  category: "",
+  brand: "",
+  price: "",
+  sku: "",
+  color: "",
+  lowStockThreshold: "",
+  salePrice: "",
+  totalStock: "",
   features: [],
-  warrantyPeriod: '',
-  status: 'draft',
-  averageReview: 0
+  warrantyPeriod: "",
+  status: "draft",
+  averageReview: 0,
 };
 
-import { useEffect } from "react";
-
 function AdminProducts() {
-  const navigate = useNavigate();
+  const [openCreateProductsDialog, setOpenCreateProductsDialog] =
+    useState(false);
+  const [formData, setFormData] = useState(initialFormData);
+  const [imageFile, setImageFile] = useState(null);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+  const [imageLoadingState, setImageLoadingState] = useState(false);
+  const [currentEditedId, setCurrentEditedId] = useState(null);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
+
+  const { productList } = useSelector((state) => state.adminProducts);
   const dispatch = useDispatch();
-  const { productList } = useSelector(state => state.adminProducts);
+  const { toast } = useToast();
+
+
+  
+  function onSubmit(event) {
+    event.preventDefault();
+
+    currentEditedId !== null
+      ? dispatch(
+          editProduct({
+            id: currentEditedId,
+            formData,
+          })
+        ).then((data) => {
+          console.log(data, "edit");
+
+          if (data?.payload?.success) {
+            dispatch(fetchAllProducts());
+            setFormData(initialFormData);
+            setOpenCreateProductsDialog(false);
+            setCurrentEditedId(null);
+          }
+        })
+      : dispatch(
+          addNewProduct({
+            ...formData,
+            image: uploadedImageUrl,
+          })
+        ).then((data) => {
+          if (data?.payload?.success) {
+            dispatch(fetchAllProducts());
+            setOpenCreateProductsDialog(false);
+            setImageFile(null);
+            setFormData(initialFormData);
+            toast({
+              title: "Product add successfully",
+            });
+          }
+        });
+  }
+
+
+  // function isFormValid() {
+  //   return Object.keys(formData)
+  //     .filter((currentKey) => currentKey !== "averageReview")
+  //     .map((key) => formData[key] !== "")
+  //     .every((item) => item);
+  // }
+
+  function handleDelete(getCurrentProductId) {
+    setProductToDelete(getCurrentProductId);
+    setShowDeleteAlert(true);
+  }
+
+  function confirmDelete() {
+    dispatch(deleteProduct(productToDelete)).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(fetchAllProducts());
+        toast({
+          title: "Product deleted successfully",
+       
+        });
+      }
+    });
+    setShowDeleteAlert(false);
+    setProductToDelete(null);
+  }
+
+  // function isFormValid() {
+  //   return Object.keys(formData)
+  //     .map((key) => formData[key] !== "") 
+  //     .every((item) => item);
+  // }
 
   useEffect(() => {
     dispatch(fetchAllProducts());
   }, [dispatch]);
 
+ console.log(formData, 'productList')
+
   return (
     <div className="flex min-h-screen w-full flex-col">
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-        {/*==========================HEADING============================= */}
         <div className="flex flex-col md:flex-row items-center justify-between">
           <h1 className="text-2xl font-bold">Products</h1>
-
-          {/*==========================SEARCH && FILTER ============================= */}
-          <div className="flex gap-3 items-center justify-end">
-            <Input
-              type="search"
-              placeholder="Search Products..."
-              className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
-            />
-
-            <DropdownMenu>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuCheckboxItem checked>
-                  Newest
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem>Oldest</DropdownMenuCheckboxItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          <Button onClick={() => setOpenCreateProductsDialog(true)}>
+            Add New Product
+          </Button>
         </div>
 
         <Tabs defaultValue="all">
-          <div className="flex items-center">
-            <TabsList>
-              <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="active">Active</TabsTrigger>
-              <TabsTrigger value="draft">Draft</TabsTrigger>
-              <TabsTrigger value="archived" className="hidden sm:flex">
-                Archived
-              </TabsTrigger>
-            </TabsList>
-            <div className="ml-auto flex items-center gap-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-8 gap-1">
-                    <ListFilter className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                      Filter
-                    </span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuCheckboxItem checked>
-                    Active
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem>Archived</DropdownMenuCheckboxItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <Button size="sm" variant="outline" className="h-8 gap-1">
-                <File className="h-3.5 w-3.5" />
-                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                  Export
-                </span>
-              </Button>
+          <TabsList>
+            <TabsTrigger value="all">All</TabsTrigger>
+            <TabsTrigger value="active">Active</TabsTrigger>
+            <TabsTrigger value="draft">Draft</TabsTrigger>
+          </TabsList>
 
-              {/* // =======================  // Add New Product Button// ============================= */}
-
-              <Button
-                onClick={() => navigate("/admin/addProducts")}
-                size="sm"
-                className="h-8 gap-1"
-              >
-                <PlusCircle className="h-3.5 w-3.5" />
-                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                  Add Product
-                </span>
-              </Button>
-
-
-            </div>
-          </div>
           <TabsContent value="all">
-            <Card x-chunk="dashboard-06-chunk-0" className="pt-3">
-              <CardContent className="pt-2">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="hidden w-[100px] sm:table-cell">
-                        <span className="sr-only">Image</span>
-                      </TableHead>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead className="hidden md:table-cell">
-                        Price
-                      </TableHead>
-                      <TableHead className="hidden md:table-cell">
-                        Sale Price
-                      </TableHead>
-                      <TableHead className="hidden md:table-cell">
-                        Total Sales
-                      </TableHead>
-                      {/* <TableHead className="hidden md:table-cell">
-                        Created at
-                      </TableHead> */}
-                      <TableHead>
-                        <span className="sr-only">Actions</span>
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {productList?.map((product) => (
-                      <TableRow key={product._id}>
-                        <TableCell className="hidden w-[100px] sm:table-cell">
-                          {product.image && (
-                            <img
-                              src={product.image}
-                              alt={product.title}
-                              className="aspect-square rounded-md object-cover"
-                              height="64"
-                              width="64"
-                            />
-                          )}
-                        </TableCell>
-                        <TableCell>{product.title}</TableCell>
-                        <TableCell>{product.status}</TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          ${product.price}
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          ${product.salePrice}
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          0
-                        </TableCell>
-                        <TableCell>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                aria-haspopup="true"
-                                size="icon"
-                                variant="ghost"
-                              >
-                                <MoreHorizontal className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                              <DropdownMenuItem>Edit</DropdownMenuItem>
-                              <DropdownMenuItem>Delete</DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-              <CardFooter>
-                <div className="text-xs text-muted-foreground">
-                  Showing <strong>1-10</strong> of <strong>32</strong> products
-                </div>
-              </CardFooter>
-            </Card>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Image</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>Sale Price</TableHead>
+                  <TableHead>Total Sales</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {productList && productList.length > 0
+                  ? productList.map((productItem) => (
+                      <AdminProductTile
+                        key={productItem._id}
+                        setFormData={setFormData}
+                        setOpenCreateProductsDialog={
+                          setOpenCreateProductsDialog
+                        }
+                        setCurrentEditedId={setCurrentEditedId}
+                        product={productItem}
+                        handleDelete={handleDelete}
+                      />
+                    ))
+                  : null}
+              </TableBody>
+            </Table>
           </TabsContent>
         </Tabs>
       </main>
+
+      <Sheet
+        open={openCreateProductsDialog}
+        onOpenChange={() => {
+          setOpenCreateProductsDialog(false);
+          setCurrentEditedId(null)
+          setFormData(initialFormData)
+
+        }}
+        
+      >
+        <SheetContent 
+          className="w-full sm:max-w-[600px] overflow-y-auto"
+          aria-describedby="sheet-description"
+        >
+          <SheetHeader>
+            <SheetTitle>
+              {
+                currentEditedId!== null ?
+                "Edit Product" : 'Add Product'
+              }
+            </SheetTitle>
+            <SheetDescription id="sheet-description">
+              Fill in the details to {currentEditedId ? 'edit' : 'add'} a product.
+            </SheetDescription>
+          </SheetHeader>
+
+          <div className="mt-6">
+            {/* Product Image Upload */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium">Product Image</h3>
+              <ProductImageUpload
+                imageFile={imageFile}
+                setImageFile={setImageFile}
+                uploadedImageUrl={uploadedImageUrl}
+                setUploadedImageUrl={setUploadedImageUrl}
+                setImageLoadingState={setImageLoadingState}
+                imageLoadingState={imageLoadingState}
+                currentEditedId={currentEditedId}
+                isEditMode={currentEditedId !== null}
+              />
+              <div className="py-6">
+                <CommonForm
+                  onSubmit={onSubmit}
+                  formData={formData}
+                  setFormData={setFormData}
+                  buttonText={currentEditedId !== null ? "Edit" : "Add"}
+                  formControls={addProductFormControls}
+                  // isBtnDisabled={!isFormValid()}
+                />
+              </div>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert} c>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to delete this product?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={confirmDelete}
+              
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

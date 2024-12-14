@@ -14,7 +14,16 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import Notifications from "../Notifications"
 import AdminSidebar from "./Sidebar"
 
-const AdminHeader = () => {
+import React from 'react'
+import { useDispatch } from "react-redux"
+import { logoutUser } from "@/store/auth-slice"
+
+function AdminHeader() {
+
+  const dispatch = useDispatch( )
+  function handleLogout(){
+    dispatch(logoutUser())
+  }
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
       <div className="flex items-center gap-4">
@@ -50,7 +59,7 @@ const AdminHeader = () => {
             <DropdownMenuSeparator />
             <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -58,4 +67,4 @@ const AdminHeader = () => {
   )
 }
 
-export default AdminHeader 
+export default AdminHeader

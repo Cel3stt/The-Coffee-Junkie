@@ -10,7 +10,7 @@ export const addNewProduct = createAsyncThunk(
   "/products/addnewproduct",
   async (formData) => {
     const result = await axios.post(
-      "http://localhost:3000/api/admin/addProducts/add",
+      "http://localhost:3000/api/admin/products/add",
       formData,
       {
         headers: {
@@ -26,34 +26,35 @@ export const fetchAllProducts = createAsyncThunk(
   "/products/fetchAllProducts",
   async () => {
     const result = await axios.get(
-      "http://localhost:3000/api/admin/addProducts/get"
+      "http://localhost:3000/api/admin/products/get"
     );
     return result?.data;
   }
 );
 
 export const editProduct = createAsyncThunk(
-    "/products/editProduct",
-    async ({id, formData}) => {
-      const result = await axios.post(
-        `http://localhost:3000/api/admin/addProducts/edit/${id}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      return result?.data;
-    }
-  );
+  "/products/editProduct",
+  async ({ id, formData }) => {
+    const result = await axios.put(
+      `http://localhost:3000/api/admin/products/edit/${id}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return result?.data;
+  }
+);
+
 
   export const deleteProduct = createAsyncThunk(
-    "/products/editProduct",
+    "/products/deleteProduct",
     async (id) => {
-      const result = await axios.put(
-        `http://localhost:3000/api/admin/addProducts/delete/${id}`,
-        
+      const result = await axios.delete(
+        `http://localhost:3000/api/admin/products/delete/${id}`
       );
       return result?.data;
     }
