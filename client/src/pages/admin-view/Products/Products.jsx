@@ -27,40 +27,37 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import React, { Fragment } from "react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllProducts } from "@/store/admin/products-slice";
 
 const initialFormData = {
-  image: null,
-  title: "",
-  description: "",
-  category: "",
-  brand: "",
-  price: "",
-  salePrice: "",
-  totalStock: "",
-  averageReview: 0,
+  image: '',
+  title: '',
+  description: '',
+  category: '',
+  brand: '',
+  price: '',
+  sku: '',
+  color: '',
+  lowStockThreshold: '',
+  salePrice: '',
+  totalStock: '',
+  features: [],
+  warrantyPeriod: '',
+  status: 'draft',
+  averageReview: 0
 };
-import { useState } from "react";
+
 import { useEffect } from "react";
 
 function AdminProducts() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { productList } = useSelector(state => state.adminProducts);
 
-  const [formData, setFormData] = useState(initialFormData);
-
-  const [products, setProducts] = useState([]);
   useEffect(() => {
-    const fetchProduct = async () => {
-      //---------replace with the actual API----------------
-      const response = await fetch("/api/products");
-      const data = await response.json();
-      setProducts(data);
-    };
-    fetchProduct();
-  }, []);
-
-  const addNewProduct = (newProduct) => {
-    setProducts([...products, newProduct]);
-  };
+    dispatch(fetchAllProducts());
+  }, [dispatch]);
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -163,31 +160,39 @@ function AdminProducts() {
                       <TableHead className="hidden md:table-cell">
                         Total Sales
                       </TableHead>
-                      <TableHead className="hidden md:table-cell">
+                      {/* <TableHead className="hidden md:table-cell">
                         Created at
-                      </TableHead>
+                      </TableHead> */}
                       <TableHead>
                         <span className="sr-only">Actions</span>
                       </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {products.map((product) => (
-                      <TableRow key={product.id}>
-                        <TableCell>
+                    {productList?.map((product) => (
+                      <TableRow key={product._id}>
+                        <TableCell className="hidden w-[100px] sm:table-cell">
                           {product.image && (
                             <img
                               src={product.image}
-                              alt={product.name}
+                              alt={product.title}
                               className="aspect-square rounded-md object-cover"
                               height="64"
                               width="64"
                             />
                           )}
                         </TableCell>
-                        <TableCell>{product.name}</TableCell>
-                        <TableCell>${product.price}</TableCell>
-                        <TableCell>{product.stock_quantity}</TableCell>
+                        <TableCell>{product.title}</TableCell>
+                        <TableCell>{product.status}</TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          ${product.price}
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          ${product.salePrice}
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          0
+                        </TableCell>
                         <TableCell>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { FlaskRound, Image } from "lucide-react";
@@ -20,22 +20,26 @@ import { CheckCircle2, AlertCircle } from "lucide-react";
 import axios from "axios";
 import ProductImageUpload from "@/components/admin-view/Image-upload";
 import { addProductFormControls } from "@/config";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewProduct, fetchAllProducts } from "@/store/admin/products-slice";
+import { useToast } from "@/hooks/use-toast";
 
 const initialFormData = {
-  image: null,
-  title: "",
-  description: "",
-  category: "",
-  brand: "",
-  price: "",
-  sku: "",
-  lowStockThreshold: "",
-  salePrice: "",
-  totalStock: "",
-  features: [""],
-  warrantyPeriod: "",
-  status: "",
-  averageReview: 0,
+  image: '',
+  title: '',
+  description: '',
+  category: '',
+  brand: '',
+  price: '',
+  sku: '',
+  color: '',
+  lowStockThreshold: '',
+  salePrice: '',
+  totalStock: '',
+  features: [],
+  warrantyPeriod: '',
+  status: 'draft',
+  averageReview: 0
 };
 
 function AddProduct() {
@@ -44,13 +48,38 @@ function AddProduct() {
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [imageLoadingState, setImageLoadingState] = useState(false);
 
+  const {productList} = useSelector(state => state.adminProducts)
+  const dispatch = useDispatch()
+  const {toast} = useToast()
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  function onSubmit() {}
-  console.log(formData, 'formData')
+  function onSubmit(event) {
+    event.preventDefault()
+    const processedFormData = {
+      ...formData,
+      features: Array.isArray(formData.features) ? formData.features : [],
+    };
+    dispatch(addNewProduct(processedFormData)).then((data) => {
+      console.log(data);
+      if(data?.payload?.success){
+        dispatch(fetchAllProducts())
+        setImageFile(null) 
+        setFormData(initialFormData)
+        toast({
+          title: "Product Added Successfully!"
+        })
+      }
+    }) 
+  }
+  useEffect(() => {
+    dispatch(fetchAllProducts());
+  }, [dispatch]);
+
+  console.log(productList, uploadedImageUrl, 'productList');
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -126,6 +155,7 @@ function AddProduct() {
               uploadedImageUrl={uploadedImageUrl}
               setUploadedImageUrl={setUploadedImageUrl}
               setImageLoadingState={setImageLoadingState}
+              imageLoadingState = {imageLoadingState}
             />
 
             {/* Features */}

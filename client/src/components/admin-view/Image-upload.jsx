@@ -4,13 +4,16 @@ import { Label } from "../ui/label";
 import { FileIcon, UploadCloudIcon, XIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import axios from "axios";
+import { Skeleton } from "../ui/skeleton";
 
 function ProductImageUpload({
   imageFile,
   setImageFile,
+  imageLoadingState,
   uploadedImageUrl,
   setUploadedImageUrl,
   setImageLoadingState,
+  setFormData,
 }) {
   const inputRef = useRef(null);
   function handleImageFileChange(event) {
@@ -50,7 +53,9 @@ function ProductImageUpload({
     );
     console.log(response, "response");
     if (response?.data?.success) {
-        setUploadedImageUrl(response.data.result.url);
+        const imageUrl = response.data.result.url;
+        setUploadedImageUrl(imageUrl);
+        setFormData(prev => ({...prev, image: imageUrl}));
         setImageLoadingState(false)
     }
   }
@@ -89,6 +94,7 @@ function ProductImageUpload({
             <span>Drag & drop or click to upload image</span>
           </Label>
         ) : (
+         
           <div className="flex items-center justify-between w-full gap-4 px-4">
             <div className="flex items-center">
               <FileIcon className="w-8 h-8 text-primary mr-2" />
