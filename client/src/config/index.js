@@ -1,4 +1,4 @@
-import { Home, LineChart, Package, ShoppingCart, Users } from "lucide-react"
+import { Home, LineChart, Package, ShoppingCart, User, UserRound, Users } from "lucide-react"
 
 export const registerFormControls = [
     {
@@ -102,9 +102,9 @@ export const addProductFormControls = [
     placeholder: "Select category",
     componentType: "select",
     options: [
-      { id: "electronics", label: "Electronics" },
-      { id: "clothing", label: "Clothing" },
-      { id: "books", label: "Books" },
+      { id: "espresso-machines", label: "Espresso Machines" },
+      { id: "coffee-grinders", label: "Coffee Grinders" },
+      { id: "coffee-tools", label: "Coffee Tools" },
     ],
   },
   {
@@ -184,5 +184,49 @@ export const shoppingViewMenuItems = [
     label: "Home",
     path : '/shop/home'
   },
-  
+  {
+    id: 'products', 
+    label: "Products",
+    path : '/shop/listing'
+  },
+  {
+    id: 'espressoMachine', 
+    label: "Espresso Machine",
+    path : '/shop/listing'
+  },
+  {
+    id: 'grinders', 
+    label: "Grinders",
+    path : '/shop/listing'
+  },
+  {
+    id: 'accessories', 
+    label: "Accessories",
+    path : '/shop/listing'
+  },
+
 ]
+
+
+export const filterOptions = {
+  category: [
+    { id: "espresso-machines", label: "Espresso Machines" },
+    { id: "coffee-grinders", label: "Coffee Grinders" },
+    { id: "coffee-tools", label: "Coffee Tools" },
+  ],
+  brand: [
+    { id: "breville", label: "Breville" },
+    { id: "delonghi", label: "De'Longhi" },
+    { id: "gaggia", label: "Gaggia" },
+    { id: "baratza", label: "Baratza" },
+    { id: "hario", label: "Hario" },
+    { id: "aeropress", label: "AeroPress" },
+  ],
+};
+
+export const sortOptions = [
+  { id: "price-lowtohigh", label: "Price: Low to High" },
+  { id: "price-hightolow", label: "Price: High to Low" },
+  { id: "title-atoz", label: "Title: A to Z" },
+  { id: "title-ztoa", label: "Title: Z to A" },
+];
