@@ -14,6 +14,8 @@ const badgeVariants = cva(
           "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
         destructive:
           "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
+        sale:
+          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         outline: "text-foreground",
         processing:
         "border-transparent bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
@@ -35,6 +37,7 @@ const badgeVariants = cva(
         "border-transparent bg-red-100 text-red-800 hover:bg-red-100",
         completed:
         "border-transparent bg-blue-100 text-blue-800 hover:bg-blue-100",
+        brand:"text-foreground",
 
       },
     },
@@ -48,6 +51,7 @@ const badgeLabels = {
   default: "Default",
   secondary: "Secondary",
   destructive: "Destructive",
+  sale: "Sale",
   outline: "Outline",
   processing: "Processing",
   shipped: "Shipped",
@@ -59,13 +63,14 @@ const badgeLabels = {
   approved: "Approved",
   rejected: "Rejected",
   completed: "Completed",
+  brand: ""
 };
 
 
 function Badge({ className, variant, ...props }) {
   return (
     <div className={cn(badgeVariants({ variant }), className)} {...props}>
-      {badgeLabels[variant] || "Unknown"}
+      {badgeLabels[variant] || ""}
     </div>
   );
 }

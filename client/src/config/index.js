@@ -102,9 +102,9 @@ export const addProductFormControls = [
     placeholder: "Select category",
     componentType: "select",
     options: [
-      { id: "espresso-machines", label: "Espresso Machines" },
-      { id: "coffee-grinders", label: "Coffee Grinders" },
-      { id: "coffee-tools", label: "Coffee Tools" },
+      { id: "espressoMachines", label: "Espresso Machines" },
+      { id: "coffeeGrinders", label: "Coffee Grinders" },
+      { id: "accessories", label: "Accessories" },
     ],
   },
   {
@@ -207,21 +207,18 @@ export const shoppingViewMenuItems = [
 
 ]
 
+export const categoryOptionsMap = {
+  espressoMachines: "Espresso Machines",
+  coffeeGrinders: "Coffee Grinders",
+  accessories: "Accessories"
+};
 
 export const filterOptions = {
   category: [
-    { id: "espresso-machines", label: "Espresso Machines" },
-    { id: "coffee-grinders", label: "Coffee Grinders" },
-    { id: "coffee-tools", label: "Coffee Tools" },
-  ],
-  brand: [
-    { id: "breville", label: "Breville" },
-    { id: "delonghi", label: "De'Longhi" },
-    { id: "gaggia", label: "Gaggia" },
-    { id: "baratza", label: "Baratza" },
-    { id: "hario", label: "Hario" },
-    { id: "aeropress", label: "AeroPress" },
-  ],
+    { id: "espressoMachines", label: "Espresso Machines" },
+    { id: "coffeeGrinders", label: "Coffee Grinders" },
+    { id: "accessories", label: "Accessories" },
+  ]
 };
 
 export const sortOptions = [
