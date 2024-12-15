@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ArrowUpDownIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { filterOptions, sortOptions } from "@/config";
 import { fetchAllFilteredProducts } from "@/store/shop/products-slice";
@@ -24,15 +24,36 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { createSearchParams } from 'react-router-dom'
+import { createSearchParams } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
+import { debounce } from 'lodash';
 
 function ShoppingListing() {
   const dispatch = useDispatch();
-  const { productList } = useSelector((state) => state.shopProducts);
+  const { productList, isLoading } = useSelector((state) => state.shopProducts);
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // Add debounce to prevent too many API calls
+  const debouncedSearch = useCallback(
+    debounce((query) => {
+      dispatch(fetchAllFilteredProducts({
+        filterParams: filters,
+        sortParams: sort,
+        searchQuery: query
+      }));
+    }, 300),
+    [filters, sort]
+  );
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    debouncedSearch(query);
+  };
 
   // Load filters from URL when component mounts
   useEffect(() => {
@@ -49,7 +70,7 @@ function ShoppingListing() {
   // Update URL when filters change
   useEffect(() => {
     if (Object.keys(filters).length > 0) {
-      const params = new URLSearchParams();
+      const params = new URLSearchParams()
       Object.entries(filters).forEach(([key, values]) => {
         if (Array.isArray(values) && values.length > 0) {
           params.set(key, values.join(','));
@@ -64,31 +85,49 @@ function ShoppingListing() {
 
   //fetching list of products
   useEffect(() => {
-    dispatch(fetchAllFilteredProducts());
-  }, [dispatch]);
+    dispatch(fetchAllFilteredProducts({
+      filterParams: filters,
+      sortParams: sort,
+      searchQuery: searchQuery
+    }));
+  }, [dispatch, filters, sort]);
 
   console.log(productList, "ProductList");
 
-  const generateBrandOptions = (products) => {
-    // Get unique brands
-    const uniqueBrands = [...new Set(products.map((product) => product.brand))];
+  const generateBrandOptions = (products, selectedCategories) => {
+    // Filter products by selected categories first if any
+    let filteredProducts = products;
+    if (selectedCategories && selectedCategories.length > 0) {
+      filteredProducts = products.filter(product => 
+        selectedCategories.some(category => 
+          product.category.toLowerCase().replace(/\s+/g, '') === category.toLowerCase().replace(/\s+/g, '')
+        )
+      );
+    }
+
+    // Get unique brands from filtered products
+    const uniqueBrands = [...new Set(filteredProducts.map(product => product.brand))];
 
     // Convert to filter option format
-    return uniqueBrands.map((brand) => ({
-      id: brand.toLowerCase(), // lowercase for consistency
-      label: brand, // original brand name for display
-    }));
+    return uniqueBrands
+      .filter(brand => brand) // Remove any null/undefined brands
+      .map(brand => ({
+        id: brand.toLowerCase(),
+        label: brand
+      }));
   };
 
-  // Use it in your component
-  const brandFilterOptions = generateBrandOptions(productList);
+  // Update brandFilterOptions when products or category filters change
+  const brandFilterOptions = useMemo(() => 
+    generateBrandOptions(productList, filters.category),
+    [productList, filters.category]
+  );
 
-  // Add it to filterOptions
+  // Combine with other filter options
   const allFilterOptions = {
     ...filterOptions,
     brand: brandFilterOptions,
   };
-
 
   function handleSort(value){
     setSort(value)
@@ -132,8 +171,8 @@ function ShoppingListing() {
 
   useEffect(() => {
     if (filters && Object.keys(filters).length > 0) {
-      const queryString = createSearchParams(filters);
-      setSearchParams(queryString);
+      const createQueryStrings = createSearchParams(filters);
+      setSearchParams(new URLSearchParams(createQueryStrings));
     }
   }, [filters]);
 
@@ -147,13 +186,23 @@ function ShoppingListing() {
   return (
     <main className="container mx-auto px-10 md:px-6 py-8 pt-32">
       <div className="flex flex-col gap-4 md:gap-6">
+        {/* Sidebar and Main Content Grid */}
         <div className="grid md:grid-cols-[240px_1fr] gap-4 md:gap-6 items-start">
+          {/* Sidebar */}
           <div className="flex flex-col gap-4">
-            <form className="grid gap-4 ">
+            <form className="grid gap-4">
+              {/* Search Input */}
               <div className="space-y-2">
                 <Label htmlFor="search">Search Product</Label>
-                <Input id="search" placeholder="Search data..." />
+                <Input 
+                  id="search" 
+                  placeholder="Search products..." 
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
               </div>
+
+              {/* Filter Accordion */}
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="filter">
                   <AccordionTrigger className="text-base">
@@ -163,7 +212,7 @@ function ShoppingListing() {
                     <div className="py-4">
                       {Object.keys(allFilterOptions).map((keyItem) => (
                         <div key={keyItem}>
-                          <h3 className="font-bold">{keyItem}</h3>
+                          <h3 className="font-bold capitalize">{keyItem}</h3>
                           <div className="grid gap-2 mt-2">
                             {allFilterOptions[keyItem].map((option) => (
                               <Label
@@ -171,9 +220,7 @@ function ShoppingListing() {
                                 key={option.id}
                               >
                                 <Checkbox 
-                                  checked={
-                                    filters[keyItem]?.includes(option.id) || false
-                                  }
+                                  checked={filters[keyItem]?.includes(option.id) || false}
                                   onCheckedChange={() => handleFilter(keyItem, option.id)} 
                                 />
                                 {option.label}
@@ -189,7 +236,10 @@ function ShoppingListing() {
               </Accordion>
             </form>
           </div>
-          <div className="grid gap-6 md:gap-8">
+
+          {/* Main Content Area */}
+          <div className="flex flex-col gap-6">
+            {/* Header with Sort */}
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-8">
               <div className="grid gap-1">
                 <h1 className="text-2xl font-bold tracking-tight">
@@ -230,19 +280,26 @@ function ShoppingListing() {
                 </DropdownMenu>
               </div>
             </div>
-            {/* Main Content Area - 9 columns on desktop, full width on mobile */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
-              {productList && productList.length > 0
-                ? productList.map((productItem) => (
-                    <ShoppingProductTile
-                      key={productItem.id}
-                      // handleGetProductDetails={handleGetProductDetails}
-                      product={productItem}
-                      // handleAddtoCart={handleAddtoCart}
-                    />
-                  ))
-                : null}
-            </div>
+
+            {/* Products Grid */}
+            {isLoading ? (
+              <div className="flex justify-center items-center min-h-[200px]">
+                Loading...
+              </div>
+            ) : productList && productList.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {productList.map((productItem) => (
+                  <ShoppingProductTile
+                    key={productItem.id}
+                    product={productItem}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="flex justify-center items-center min-h-[200px]">
+                No products found
+              </div>
+            )}
           </div>
         </div>
       </div>
