@@ -29,11 +29,11 @@ const ProductSchema = new mongoose.Schema(
     },
     sku: {
       type: String,
-      sparse: true,  // Allows null/undefined
+      sparse: true,  
       default: null,
-      match: /^[a-zA-Z0-9-]+$/, // Ensures alphanumeric characters and optional dashes
-      maxlength: 20,           // Optional: Sets a maximum length (e.g., 20 characters)
-      trim: true               // Removes leading/trailing spaces
+      match: /^[a-zA-Z0-9-]+$/, 
+      maxlength: 20,           
+      trim: true              
     },
     lowStockThreshold: {
       type: Number,

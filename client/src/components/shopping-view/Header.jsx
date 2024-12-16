@@ -15,6 +15,9 @@ import {
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { logoutUser } from "@/store/auth-slice";
+import UserCartWrapper from "./Cart-wrapper";
+import { useEffect, useState } from "react";
+import { fetchCartItems } from "@/store/shop/cart-slice";
 
 function MenuItems({ isMobile }) {
   return (
@@ -34,17 +37,31 @@ function MenuItems({ isMobile }) {
 
 function HeaderRightContent() {
   const { user } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.shopCart);
+
+  const [openCartSheet, setOpenCartSheet] = useState(false)
   const navigate = useNavigate();
   const dispatch = useDispatch()
 
   function handleLogout(){
     dispatch(logoutUser())
   }
+
+  useEffect(() => {
+    dispatch(fetchCartItems(user?.id))
+  }, [dispatch])
+
   return (
     <div className="flex items-center gap-4">
-      <Button variant="outline" size="sm">
+      <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
+      <Button onClick={() => setOpenCartSheet(true)} variant="outline" size="sm">
         <ShoppingCart />
       </Button>
+
+      <UserCartWrapper cartItems={cartItems  && cartItems.items && cartItems.items.length > 0 ? cartItems.items : []} />
+      </Sheet>
+
+      
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar className="bg-primary">

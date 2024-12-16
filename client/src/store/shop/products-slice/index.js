@@ -1,18 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const filterAndSortProducts = (products, filters, sortBy, searchQuery = '') => {
+const filterAndSortProducts = (products, filters, sortBy) => {
   let filteredProducts = [...products];
-
-  if (searchQuery.trim()) {
-    const query = searchQuery.toLowerCase().trim();
-    filteredProducts = filteredProducts.filter(product => 
-      product.title.toLowerCase().includes(query) ||
-      product.description.toLowerCase().includes(query) ||
-      product.brand.toLowerCase().includes(query) ||
-      product.category.toLowerCase().includes(query)
-    );
-  }
 
   if (filters && Object.keys(filters).length > 0) {
     filteredProducts = filteredProducts.filter(product => {
@@ -21,14 +11,9 @@ const filterAndSortProducts = (products, filters, sortBy, searchQuery = '') => {
         
         switch(key) {
           case 'category':
-            const productCategory = product.category.toLowerCase().replace(/\s+/g, '');
-            return values.some(value => 
-              value.toLowerCase().replace(/\s+/g, '') === productCategory
-            );
+            return values.includes(product.category.toLowerCase());
           case 'brand':
-            return values.some(value => 
-              product.brand.toLowerCase() === value.toLowerCase()
-            );
+            return values.includes(product.brand.toLowerCase());
           case 'price':
             const [min, max] = values;
             return product.price >= min && product.price <= max;
@@ -41,22 +26,17 @@ const filterAndSortProducts = (products, filters, sortBy, searchQuery = '') => {
 
   if (sortBy) {
     filteredProducts.sort((a, b) => {
-      const getEffectivePrice = (product) => {
-        return product.salePrice && product.salePrice > 0 ? product.salePrice : product.price;
-      };
-
-      const priceA = getEffectivePrice(a);
-      const priceB = getEffectivePrice(b);
-
       switch(sortBy) {
-        case 'price-lowtohigh':
-          return priceA - priceB;
-        case 'price-hightolow':
-          return priceB - priceA;
-        case 'title-atoz':
-          return a.title.localeCompare(b.title);
-        case 'title-ztoa':
-          return b.title.localeCompare(a.title);
+        case 'price-low-to-high':
+          return a.price - b.price;
+        case 'price-high-to-low':
+          return b.price - a.price;
+        case 'name-a-z':
+          return a.name.localeCompare(b.name);
+        case 'name-z-a':
+          return b.name.localeCompare(a.name);
+        case 'newest':
+          return new Date(b.createdAt) - new Date(a.createdAt);
         default:
           return 0;
       }
@@ -73,7 +53,7 @@ const initialState = {
 
 export const fetchAllFilteredProducts = createAsyncThunk(
     "/products/fetchAllProducts",
-    async ({filterParams, sortParams, searchQuery}) => {
+    async ({filterParams, sortParams}) => {
         try {
             const result = await axios.get(
                 `http://localhost:3000/api/shop/products/get`
@@ -82,8 +62,7 @@ export const fetchAllFilteredProducts = createAsyncThunk(
             const filteredAndSortedProducts = filterAndSortProducts(
                 result?.data?.data,
                 filterParams,
-                sortParams,
-                searchQuery
+                sortParams
             );
 
             return {
@@ -95,6 +74,18 @@ export const fetchAllFilteredProducts = createAsyncThunk(
             throw error;
         }
     }
+);
+
+export const fetchProductDetails = createAsyncThunk(
+  'products/fetchProductDetails',
+  async (productId) => {
+    try {
+      const response = await axios.get(`http://localhost:3000/api/shop/products/get/${productId}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
 );
 
 const shopingProductSlice = createSlice({
@@ -113,6 +104,19 @@ const shopingProductSlice = createSlice({
             .addCase(fetchAllFilteredProducts.rejected, (state) => {
                 state.isLoading = false;
                 state.productList = [];
+            })
+            .addCase(fetchProductDetails.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(fetchProductDetails.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.productDetails = action.payload;
+                state.error = null;
+            })
+            .addCase(fetchProductDetails.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message;
             });
     }
 });

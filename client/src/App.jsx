@@ -30,6 +30,9 @@ import { Skeleton } from './components/ui/skeleton'
 import AdminProducts from './pages/admin-view/Products/Products'
 import ShoppingHeader from './components/shopping-view/Header'
 
+import ProductDetailsPageWrapper from './components/shopping-view/ProductDetailsPageWrapper'
+import { omit } from 'lodash'
+
 
 
 function App() {
@@ -90,7 +93,20 @@ function App() {
         <Route path='checkout' element={<ShoppingCheckout/>}/>
         <Route path='account' element={<ShoppingAccount/>}/>
         <Route path='listing' element={<ShoppingListing/>}/>
+        <Route path="product/:id" element={<ProductDetailsPageWrapper />} />
+
+
+     
+
+       
+
+
+
      </Route>
+     
+
+     
+     
 
       <Route path='*' element={<NotFound/>}></Route>
     </Routes>
