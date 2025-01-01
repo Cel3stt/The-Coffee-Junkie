@@ -41,6 +41,7 @@ function ShoppingListing() {
   const { productList, productDetails, isLoading } = useSelector(
     (state) => state.shopProducts
   );
+  const { cartItems } = useSelector((state) => state.shopCart);
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -81,9 +82,10 @@ function ShoppingListing() {
     }
   }, []);
 
-  const handleGetProductDetails = (productId) => {
-    navigate(`/shop/product/${productId}`);
-  };
+  function handleGetProductDetails(getCurrentProductId) {
+    console.log(getCurrentProductId);
+    dispatch(fetchProductDetails(getCurrentProductId));
+  }
 
   const generateBrandOptions = (products, selectedCategories) => {
     // Filter products by selected categories first if any
@@ -155,8 +157,28 @@ function ShoppingListing() {
       return cpyFilters;
     });
   }
+  
 
-  function handleAddToCart(getCurrentProductId) {
+  function handleAddToCart(getCurrentProductId, getTotalStock) {
+    const getCartItems = cartItems?.items || [];
+
+    if (getCartItems.length) {
+      const indexOfCurrentItem = getCartItems.findIndex(
+        (item) => item.productId === getCurrentProductId
+      );
+      if (indexOfCurrentItem > -1) {
+        const getQuantity = getCartItems[indexOfCurrentItem].quantity;
+        if (getQuantity + 1 > getTotalStock) {
+          toast({
+            title: `Only ${getQuantity} quantity can be added for this item`,
+            variant: "destructive",
+          });
+
+          return;
+        }
+      }
+    }
+
     dispatch(
       addToCart({
         userId: user?.id,
@@ -164,11 +186,11 @@ function ShoppingListing() {
         quantity: 1,
       })
     ).then((data) => {
-      if(data?.payload?.success){
-        dispatch(fetchCartItems(user?.id))
+      if (data?.payload?.success) {
+        dispatch(fetchCartItems(user?.id));
         toast({
-          title : 'Product is added to cart'
-        })
+          title: "Product is added to cart",
+        });
       }
     });
   }

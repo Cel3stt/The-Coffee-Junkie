@@ -186,22 +186,17 @@ export const shoppingViewMenuItems = [
   },
   {
     id: 'products', 
-    label: "Products",
+    label: "Shop",
     path : '/shop/listing'
   },
   {
-    id: 'espressoMachine', 
-    label: "Espresso Machine",
+    id: 'about', 
+    label: "About Us",
     path : '/shop/listing'
   },
   {
-    id: 'grinders', 
-    label: "Grinders",
-    path : '/shop/listing'
-  },
-  {
-    id: 'accessories', 
-    label: "Accessories",
+    id: 'contact', 
+    label: "Contact",
     path : '/shop/listing'
   },
 
