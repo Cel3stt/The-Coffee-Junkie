@@ -202,11 +202,11 @@ export const shoppingViewMenuItems = [
 
 ]
 
-export const categoryOptionsMap = {
-  espressoMachines: "Espresso Machines",
-  coffeeGrinders: "Coffee Grinders",
-  accessories: "Accessories"
-};
+// export const categoryOptionsMap = {
+//   espressoMachines: "Espresso Machines",
+//   coffeeGrinders: "Coffee Grinders",
+//   accessories: "Accessories"
+// };
 
 export const filterOptions = {
   category: [
