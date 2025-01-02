@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { ShoppingCart } from "lucide-react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import { HeartIcon } from "lucide-react";
 
@@ -12,9 +13,15 @@ function ShoppingProductTile({
   handleGetProductDetails,
   handleAddToCart,
 }) {
+  const navigate = useNavigate();
+
+  const handleProductClick = () => {
+    navigate(`/shop/product/${product._id}`);
+  };
+
   return (
     <Card className="w-full max-w-[350px] group relative space-y-4 rounded-lg">
-      <div onClick={() => handleGetProductDetails(product?._id)}>
+      <div onClick={handleProductClick} className="product-card">
         <figure className="group-hover:opacity-90 bg-[#FAFAFA] p-4">
           <img
             src={product?.image}

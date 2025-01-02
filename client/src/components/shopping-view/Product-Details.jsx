@@ -4,9 +4,18 @@ import { Separator } from "../ui/separator";
 import { Label } from "../ui/label";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
+import { toast } from "@/hooks/use-toast";
+import { setProductDetails } from "@/store/shop/products-slice";
+
 
 function ProductDetails({ productDetails}) {
-  // Destructure the product details with default values
+  // Destructure the product details with default values\
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.shopCart);
+  
   const {
     title,
     description,
@@ -16,6 +25,41 @@ function ProductDetails({ productDetails}) {
     brand,
     category
   } = productDetails?.data || {};
+
+  const handleAddToCart = (productId, totalStock) => {
+    const getCartItems = cartItems?.items || [];
+
+    if (getCartItems.length) {
+      const indexOfCurrentItem = getCartItems.findIndex(
+        (item) => item.productId === productId
+      );
+      if (indexOfCurrentItem > -1) {
+        const getQuantity = getCartItems[indexOfCurrentItem].quantity;
+        if (getQuantity + 1 > totalStock) {
+          toast({
+            title: `Only ${getQuantity} quantity can be added for this item`,
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+    }
+
+    dispatch(
+      addToCart({
+        userId: user?.id,
+        productId: productId,
+        quantity: 1,
+      })
+    ).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(fetchCartItems(user?.id));
+        toast({
+          title: "Product is added to cart",
+        });
+      }
+    });
+  };
 
   return (
     <div className="container mx-auto px-4 sm:px-6 md:px-8 py-8">
@@ -90,7 +134,10 @@ function ProductDetails({ productDetails}) {
           </div>
 
           {/* Add to Cart Button */}
-          <Button size="lg" className="w-full">
+          <Button size="lg" className="w-full" onClick={() => handleAddToCart(
+                    productDetails?._id,
+                    productDetails?.totalStock
+                  )}>
             Add to Cart
           </Button>
 

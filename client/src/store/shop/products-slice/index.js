@@ -77,14 +77,13 @@ export const fetchAllFilteredProducts = createAsyncThunk(
 );
 
 export const fetchProductDetails = createAsyncThunk(
-  'products/fetchProductDetails',
-  async (productId) => {
-    try {
-      const response = await axios.get(`http://localhost:3000/api/shop/products/get/${productId}`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+  "/products/fetchProductDetails",
+  async (id) => {
+    const result = await axios.get(
+      `http://localhost:3000/api/shop/products/get/${id}`
+    );
+
+    return result?.data;
   }
 );
 
@@ -120,5 +119,6 @@ const shopingProductSlice = createSlice({
             });
     }
 });
+export const { setProductDetails } = shopingProductSlice.actions;
 
 export default shopingProductSlice.reducer;
