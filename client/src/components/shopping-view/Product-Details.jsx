@@ -26,29 +26,36 @@ function ProductDetails({ productDetails}) {
     category
   } = productDetails?.data || {};
 
-  const handleAddToCart = (productId, totalStock) => {
-    const getCartItems = cartItems?.items || [];
+  console.log("Product ID:", productDetails?._id);
+  console.log("Total Stock:", productDetails?.totalStock);
+  console.log("Product Details:", productDetails);
+
+  const productId = productDetails?.data?._id || "defaultId";
+  const totalStock = productDetails?.data?.totalStock || 0;
+
+  function handleAddToCart(getCurrentProductId, getTotalStock) {
+    let getCartItems = cartItems.items || [];
 
     if (getCartItems.length) {
       const indexOfCurrentItem = getCartItems.findIndex(
-        (item) => item.productId === productId
+        (item) => item.productId === getCurrentProductId
       );
       if (indexOfCurrentItem > -1) {
         const getQuantity = getCartItems[indexOfCurrentItem].quantity;
-        if (getQuantity + 1 > totalStock) {
+        if (getQuantity + 1 > getTotalStock) {
           toast({
             title: `Only ${getQuantity} quantity can be added for this item`,
             variant: "destructive",
           });
+
           return;
         }
       }
     }
-
     dispatch(
       addToCart({
         userId: user?.id,
-        productId: productId,
+        productId: getCurrentProductId,
         quantity: 1,
       })
     ).then((data) => {
@@ -59,8 +66,7 @@ function ProductDetails({ productDetails}) {
         });
       }
     });
-  };
-
+  }
   return (
     <div className="container mx-auto px-4 sm:px-6 md:px-8 py-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
@@ -134,10 +140,13 @@ function ProductDetails({ productDetails}) {
           </div>
 
           {/* Add to Cart Button */}
-          <Button size="lg" className="w-full" onClick={() => handleAddToCart(
-                    productDetails?._id,
-                    productDetails?.totalStock
-                  )}>
+          <Button
+            size="lg"
+            className="w-full"
+            onClick={() =>
+              handleAddToCart(productDetails?.data?._id, productDetails?.data?.totalStock)
+            }
+          >
             Add to Cart
           </Button>
 

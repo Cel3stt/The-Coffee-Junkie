@@ -4,6 +4,7 @@ const Product = require("../../models/Product");
 const addToCart = async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
+    
 
     if (!userId || !productId || quantity <= 0) {
       return res.status(400).json({
