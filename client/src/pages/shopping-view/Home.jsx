@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import heroImg from "../../assets/Shop/hero-img.png";
 import highlightText from "../../assets/Shop/HighlightText.png"
@@ -14,49 +14,60 @@ import { Settings, Zap, Leaf, ChevronRightIcon } from 'lucide-react'
 
 import { Button} from "@/components/ui/button"
 
+
+const categories = [
+  {
+    id: "espressoMachines", label: "Espresso Machines",
+    description: "Discover our range of high-quality espresso machines",
+    image: espressoMachine
+  },
+  {
+    id: "coffeeGrinders", label: "Coffee Grinders",
+    description: "Find the perfect grinder for your coffee needs",
+    image: coffeeGrinders
+  },
+  {
+    id: "accessories", label: "Accessories",
+    description: "Explore our selection of coffee accessories",
+    image: coffeeTools
+  }
+]
+
+const products = [
+  {
+    id: 1,
+    name: "Nuova Simonelli G60 AMC",
+    description: "Gives a cafe-quality results with micrometrical grind adjustment",
+    image: best2,
+    featured: true
+  },
+  {
+    id: 2,
+    name: "Nuova Simonelli Appia LIFE Volumetric Espresso Machine",
+    description: "Volumetric Espresso Machine",
+    image: best1
+  },
+  {
+    id: 3,
+    name: "Victoria Arduino E1 Prima",
+    description: "Volumetric Espresso Machine",
+    image: best3
+  }
+]
+
 function ShoppingHome() {
 
+  const navigate = useNavigate()
 
-  const categories = [
-    {
-      id: "espressoMachines", label: "Espresso Machines",
-      description: "Discover our range of high-quality espresso machines",
-      image: espressoMachine
-    },
-    {
-      id: "coffeeGrinders", label: "Coffee Grinders",
-      description: "Find the perfect grinder for your coffee needs",
-      image: coffeeGrinders
-    },
-    {
-      id: "accessories", label: "Accessories",
-      description: "Explore our selection of coffee accessories",
-      image: coffeeTools
+  function handleNavigateToListingPage(getCurrentItem, section){
+    sessionStorage.removeItem('filters');
+    const currentFilter = {
+      [section] : [getCurrentItem.id]
     }
-  ]
 
-  const products = [
-    {
-      id: 1,
-      name: "Nuova Simonelli G60 AMC",
-      description: "Gives a cafe-quality results with micrometrical grind adjustment",
-      image: best2,
-      featured: true
-    },
-    {
-      id: 2,
-      name: "Nuova Simonelli Appia LIFE Volumetric Espresso Machine",
-      description: "Volumetric Espresso Machine",
-      image: best1
-    },
-    {
-      id: 3,
-      name: "Victoria Arduino E1 Prima",
-      description: "Volumetric Espresso Machine",
-      image: best3
-    }
-  ]
-
+    sessionStorage.setItem('filters', JSON.stringify(currentFilter))
+    navigate(`/shop/listing`)
+  }
   return (
     <div className="flex flex-col min-h-screen">
       <div className="w-full">
@@ -172,7 +183,7 @@ function ShoppingHome() {
                 <p className="mt-1 text-gray-500 dark:text-gray-400 mb-4">
                   {category.description}
                 </p>
-                <Button>
+                <Button onClick={() => handleNavigateToListingPage(category, 'category')}>
                   Explore
                 </Button>
               </div>
