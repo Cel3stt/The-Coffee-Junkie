@@ -167,17 +167,14 @@ function ShoppingHome() {
                   className="object-cover transition-transform"
                 />
               </div>
-              <div className="p-4 text-center">
+              <div className="p-4 text-left">
                 <h3 className="text-xl font-bold">{category.label}</h3>
-                <p className="mt-1 text-gray-500 dark:text-gray-400">
+                <p className="mt-1 text-gray-500 dark:text-gray-400 mb-4">
                   {category.description}
                 </p>
-                <Link
-                  href="#"
-                  className="mt-3 inline-flex items-center justify-center rounded-md bg-primary px-4 py-1 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1"
-                >
+                <Button>
                   Explore
-                </Link> 
+                </Button>
               </div>
             </div>
           ))}

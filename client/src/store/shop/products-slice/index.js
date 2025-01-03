@@ -11,7 +11,7 @@ const filterAndSortProducts = (products, filters, sortBy) => {
         
         switch(key) {
           case 'category':
-            return values.includes(product.category.toLowerCase());
+            return values.includes(product.category);
           case 'brand':
             return values.includes(product.brand.toLowerCase());
           case 'price':

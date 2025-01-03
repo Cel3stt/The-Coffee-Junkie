@@ -208,6 +208,7 @@ export const shoppingViewMenuItems = [
 //   accessories: "Accessories"
 // };
 
+
 export const filterOptions = {
   category: [
     { id: "espressoMachines", label: "Espresso Machines" },

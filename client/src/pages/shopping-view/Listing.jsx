@@ -126,8 +126,6 @@ function ShoppingListing() {
     brand: brandFilterOptions,
   };
 
-  console.log(allFilterOptions);
-
   function handleSort(value) {
     setSort(value);
   }
