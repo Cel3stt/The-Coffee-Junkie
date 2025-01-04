@@ -68,6 +68,8 @@ function ShoppingHome() {
     sessionStorage.setItem('filters', JSON.stringify(currentFilter))
     navigate(`/shop/listing`)
   }
+
+  
   return (
     <div className="flex flex-col min-h-screen">
       <div className="w-full">

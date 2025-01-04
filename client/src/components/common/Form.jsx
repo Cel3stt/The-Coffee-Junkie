@@ -7,7 +7,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Button } from '../ui/button'
 import { Textarea } from '../ui/textarea'
 
-function CommonForm({ formControls = [], formData, setFormData, onSubmit, buttonText, isBtnDisabled}) {
+function CommonForm({
+  formControls = [],
+  formData,
+  setFormData,
+  onSubmit,
+  buttonText,
+  isBtnDisabled,
+  inputClassName = "",
+  labelClassName = "",
+  buttonClassName = ""
+}) {
     
     function renderInputsByComponentType(getControlItem) {
         let element = null;
@@ -101,15 +111,15 @@ function CommonForm({ formControls = [], formData, setFormData, onSubmit, button
 
     return (
         <form onSubmit={onSubmit}>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           {formControls.map((controlItem) => (
-            <div className="grid w-full gap-1.5" key={controlItem.name}>
-              <Label className="mb-1">{controlItem.label}</Label>
+            <div className="grid w-full gap-1.5 " key={controlItem.name}>
+              <Label className={`mb-1 ${labelClassName}`}>{controlItem.label}</Label>
               {renderInputsByComponentType(controlItem)}
             </div>
           ))}
         </div>
-        <Button disabled={isBtnDisabled} type="submit" className="mt-2 w-full">
+        <Button disabled={isBtnDisabled} type="submit" className={`mt-2 ${buttonClassName}`}>
           {buttonText || "Submit"}
         </Button>
       </form>

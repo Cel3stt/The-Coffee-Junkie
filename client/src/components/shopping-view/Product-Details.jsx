@@ -75,6 +75,7 @@ function ProductDetails({ productDetails}) {
           <img
             src={image}
             alt={title}
+            loading="lazy"
             className="w-full h-auto aspect-square object-cover rounded-lg shadow-lg"
           />
         </div>
