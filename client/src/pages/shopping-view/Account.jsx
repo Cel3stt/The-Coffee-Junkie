@@ -14,7 +14,7 @@ function ShoppingAccount() {
           </p>
 
           <Tabs defaultValue="account" className="w-full">
-            <TabsList className="mb-8">
+            <TabsList className="mb-4">
               <TabsTrigger value="account">Account</TabsTrigger>
               <TabsTrigger value="orders">Orders</TabsTrigger>
             </TabsList>

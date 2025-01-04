@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Label } from '../ui/label'
 
-function AddressCard({addressInfo}) {
+function AddressCard({addressInfo, handleDeleteAddress, handleEditAddress}) {
     return (
         <Card className="mb-4">
           <CardContent className="pt-6">
@@ -29,22 +29,23 @@ function AddressCard({addressInfo}) {
                 <Label className="text-sm">{addressInfo?.notes}</Label>
               </div>
              
-              <div className="flex justify-between mt-4">
+              <div className="flex justify-between pt-4">
                 <Button
                   variant="secondary"
-                  size="sm"
-                //   onClick={() => onEdit(address)}
+                  size=""
+                  onClick={() => handleEditAddress(addressInfo)}
                 >
                   Edit
                 </Button>
                 <Button
                   variant="destructive"
-                  size="sm"
-                //   onClick={() => onDelete(address)}
+                  size=""
+                  onClick={() => handleDeleteAddress(addressInfo)}
                 >
                   Delete
                 </Button>
               </div>
+              
             </div>
           </CardContent>
         </Card>
