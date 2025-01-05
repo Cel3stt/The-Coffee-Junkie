@@ -16,7 +16,11 @@ import { addressFormControls } from "@/config";
 import { Eclipse, UserIcon } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { addNewAddress, fetchAllAddress } from "@/store/shop/address-slice";
+import {
+  addNewAddress,
+  deleteAddress,
+  fetchAllAddress,
+} from "@/store/shop/address-slice";
 
 const initialAddressFormData = {
   address: "",
@@ -27,6 +31,7 @@ const initialAddressFormData = {
 };
 function Address() {
   const [formData, setFormData] = useState(initialAddressFormData);
+  const [currentEditedId, setCurrentEditedId] = useState(null);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { addressList } = useSelector((state) => state.shopAddress);
@@ -47,6 +52,29 @@ function Address() {
     });
   }
 
+  function handleDeleteAddress(getCurrentAddress) {
+    console.log(getCurrentAddress);
+    dispatch(
+      deleteAddress({ userId: user?.id, addressId: getCurrentAddress._id })
+    ).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(fetchAllAddress(user?.id));
+      }
+    });
+  }
+
+  function handleEditAddress(getCurrentAddress) {
+    setCurrentEditedId(getCurrentAddress?._id);
+    setFormData({
+      ...formData,
+      address: getCurrentAddress?.address,
+      city: getCurrentAddress?.city,
+      postalCode: getCurrentAddress?.postalCode,
+      phone: getCurrentAddress?.phone,
+      notes: getCurrentAddress?.notes,
+    });
+  }
+
   function isFormValid() {
     return Object.keys(formData)
       .map((key) => formData[key].trim() !== "")
@@ -60,11 +88,13 @@ function Address() {
   console.log(addressList, "addressList");
 
   return (
-       <div className="flex flex-col lg:flex-row gap-8">
+    <div className="flex flex-col lg:flex-row gap-8">
       {/* Address Form */}
       <div className="flex-1 px-6 py-10 border-r border-gray-300">
         <div className="max-w-2xl">
-          <h2 className="text-2xl font-bold mb-2">Add New Address</h2>
+          <h2 className="text-2xl font-bold mb-2">
+            {currentEditedId !== null ? "Edit Address" : "Add New Address"}
+          </h2>
           <p className="text-muted-foreground mb-8">
             This is how others will see you on the site.
           </p>
@@ -74,7 +104,9 @@ function Address() {
             formControls={addressFormControls}
             formData={formData}
             setFormData={setFormData}
-            buttonText="Add New Address"
+            buttonText={
+              currentEditedId !== null ? "Edit" : "Save"
+            }
             onSubmit={handleManageAddress}
             isBtnDisabled={!isFormValid()}
             inputClassName="custom-input-class"
@@ -89,7 +121,12 @@ function Address() {
       <div className="w-full lg:w-1/4 flex flex-col gap-4">
         {addressList && addressList.length > 0
           ? addressList.map((singleAddressItem) => (
-              <AddressCard key={singleAddressItem.id} addressInfo={singleAddressItem} />
+              <AddressCard
+                key={singleAddressItem.id}
+                addressInfo={singleAddressItem}
+                handleDeleteAddress={handleDeleteAddress}
+                handleEditAddress={handleEditAddress}
+              />
             ))
           : null}
       </div>

@@ -30,13 +30,13 @@ function AddressCard({addressInfo, handleDeleteAddress, handleEditAddress}) {
               </div>
              
               <div className="flex justify-between pt-4">
-                <Button
+                 <Button
                   variant="secondary"
                   size=""
                   onClick={() => handleEditAddress(addressInfo)}
                 >
                   Edit
-                </Button>
+                </Button> 
                 <Button
                   variant="destructive"
                   size=""
