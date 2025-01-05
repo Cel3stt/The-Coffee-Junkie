@@ -5,7 +5,7 @@ const {addAddress,fetchAddress,editAddress,deleteAddress} = require('../../contr
 const router = express.Router()
 router.post('/add', addAddress)
 router.get('/get/:userId', fetchAddress)
-router.put('/edit/:userId/:addressId', editAddress)
+router.put('/update/:userId/:addressId', editAddress)
 router.delete('/delete/:userId/:addressId', deleteAddress)
 
 module.exports = router;
