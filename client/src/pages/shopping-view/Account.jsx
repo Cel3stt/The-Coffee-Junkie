@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Address from '@/components/shopping-view/address';
+import ShoppingOrders from '@/components/shopping-view/orders';
 
 function ShoppingAccount() {
   return (
@@ -24,7 +25,8 @@ function ShoppingAccount() {
             </TabsContent>
 
             <TabsContent value="orders">
-              <div className="text-sm text-muted-foreground">Account settings coming soon...</div>
+              <ShoppingOrders/>
+              
             </TabsContent>
           </Tabs>
         </div>

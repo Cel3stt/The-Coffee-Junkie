@@ -4,7 +4,7 @@ import Dashboard from './pages/admin-view/Dashboard'
 import { Routes, Route } from 'react-router-dom'
 
 import AdminLayout from './components/admin-view/layout'
-import Orders from './pages/admin-view/Orders/Orders'
+
 import OrderDetails from './pages/admin-view/Orders/Order-Details'
 import Employee from './pages/admin-view/Employee/Employee'
 import ProductDetails from './pages/admin-view/Products/ProductDetails'
@@ -32,6 +32,7 @@ import ShoppingHeader from './components/shopping-view/Header'
 
 import ProductDetailsPageWrapper from './components/shopping-view/ProductDetailsPageWrapper'
 import { omit } from 'lodash'
+import AdminOrders from './pages/admin-view/Orders/Orders'
 
 
 
@@ -70,7 +71,7 @@ function App() {
         </CheckAuth>
       }>
         <Route path ='dashboard' element={<Dashboard />} />
-        <Route path='orders' element={<Orders/>}/>
+        <Route path='orders' element={<AdminOrders/>}/>
         <Route path='details' element={<OrderDetails/>}/>
         <Route path='products' element={<AdminProducts/>}/>
         
@@ -94,6 +95,7 @@ function App() {
         <Route path='account' element={<ShoppingAccount/>}/>
         <Route path='listing' element={<ShoppingListing/>}/>
         <Route path="product/:id" element={<ProductDetailsPageWrapper />} />
+        
 
 
      

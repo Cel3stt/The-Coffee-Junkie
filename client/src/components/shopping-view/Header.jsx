@@ -21,7 +21,9 @@ import { fetchCartItems } from "@/store/shop/cart-slice";
 
 function MenuItems({ isMobile }) {
   return (
-    <nav className={`flex ${isMobile ? 'flex-col gap-y-4' : 'flex-row gap-x-8'}`}>
+    <nav
+      className={`flex ${isMobile ? "flex-col gap-y-4" : "flex-row gap-x-8"}`}
+    >
       {shoppingViewMenuItems.map((menuItem) => (
         <Link
           className="font-medium flex items-center text-sm transition-colors hover:underline"
@@ -39,29 +41,39 @@ function HeaderRightContent() {
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.shopCart);
 
-  const [openCartSheet, setOpenCartSheet] = useState(false)
+  const [openCartSheet, setOpenCartSheet] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  function handleLogout(){
-    dispatch(logoutUser())
+  function handleLogout() {
+    dispatch(logoutUser());
   }
 
   useEffect(() => {
-    dispatch(fetchCartItems(user?.id))
-  }, [dispatch])
+    dispatch(fetchCartItems(user?.id));
+  }, [dispatch]);
 
   return (
     <div className="flex items-center gap-4">
       <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
-      <Button onClick={() => setOpenCartSheet(true)} variant="outline" size="sm">
-        <ShoppingCart />
-      </Button>
+        <Button
+          onClick={() => setOpenCartSheet(true)}
+          variant="outline"
+          size="sm"
+        >
+          <ShoppingCart />
+        </Button>
 
-      <UserCartWrapper cartItems={cartItems  && cartItems.items && cartItems.items.length > 0 ? cartItems.items : []} />
+        <UserCartWrapper
+        setOpenCartSheet={setOpenCartSheet}
+          cartItems={
+            cartItems && cartItems.items && cartItems.items.length > 0
+              ? cartItems.items
+              : []
+          }
+        />
       </Sheet>
 
-      
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar className="bg-primary">
@@ -90,7 +102,6 @@ function HeaderRightContent() {
 
 function ShoppingHeader() {
   const { isAuthenticated } = useSelector((state) => state.auth);
- 
 
   return (
     <header className="fixed inset-x-0 top-0 z-50  px-4 md:px-6 bg-white shadow-sm dark:bg-gray-950/90">
@@ -134,9 +145,9 @@ function ShoppingHeader() {
               <MenuItems isMobile={false} />
             </div>
 
-           <div className="hidden lg:block">
-           <HeaderRightContent /> 
-           </div>
+            <div className="hidden lg:block">
+              <HeaderRightContent />
+            </div>
           </div>
         </div>
       </div>
