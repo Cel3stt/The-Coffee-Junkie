@@ -27,11 +27,13 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import OrderDetails from '@/pages/admin-view/Orders/Order-Details'
+import { Dialog } from '../ui/dialog'
+import AdminOrderDetailsView from './Order-Details'
 
 const AdminOrdersView = () => {
 
-  const [selectedOrder, setSelectedOrder] = useState(null)
-    const orders = [
+  const [openDetailsDialog, setOpenDetailsDialog] = useState(false)
+  const orders = [
         {
             id: "ORD001",
             item: "Espresso",
@@ -154,15 +156,20 @@ const AdminOrdersView = () => {
               </div>
               <div className="mt-4 text-right">
               
-              <Link to='/shop/details'>
-              <Button
+             <Dialog open={openDetailsDialog} onOpenChange={setOpenDetailsDialog}>
+              
+             <Button
                   variant="outline"
                   className="w-full mt-4 text-gray-800 font-normal"
-                  onClick={() => setSelectedOrder(order)}
+                  onClick={() => setOpenDetailsDialog(true)}
                 >
                   View Details
                 </Button>
-              </Link>
+                <AdminOrderDetailsView/>
+             
+             </Dialog>
+
+
               </div>
             </CardContent>
           </Card>
@@ -177,3 +184,4 @@ const AdminOrdersView = () => {
 }
 
 export default AdminOrdersView
+
