@@ -33,6 +33,7 @@ import ShoppingHeader from './components/shopping-view/Header'
 import ProductDetailsPageWrapper from './components/shopping-view/ProductDetailsPageWrapper'
 import { omit } from 'lodash'
 import AdminOrders from './pages/admin-view/Orders/Orders'
+import PaypalReturnPage from './pages/shopping-view/paypal-return'
 
 
 
@@ -95,6 +96,7 @@ function App() {
         <Route path='account' element={<ShoppingAccount/>}/>
         <Route path='listing' element={<ShoppingListing/>}/>
         <Route path="product/:id" element={<ProductDetailsPageWrapper />} />
+        <Route path='paypal-return' element={<PaypalReturnPage/>}/>
         
 
 

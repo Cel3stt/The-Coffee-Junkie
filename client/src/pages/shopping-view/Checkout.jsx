@@ -1,28 +1,85 @@
 import Address from "@/components/shopping-view/address";
-import React from "react";
-import AddressCard from "@/components/shopping-view/Address-Card";
+import React, { useState } from "react";
+
 import { Button } from "@/components/ui/button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UserCartItemsContent from "@/components/shopping-view/Cart-items-content";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CreditCardIcon } from "lucide-react";
+import { createNewOrder } from "@/store/shop/order-slice";
+
 
 function ShoppingCheckout() {
   const { cartItems } = useSelector((state) => state.shopCart);
+  const { user } = useSelector((state) => state.auth);
+  const {approvalURL} = useSelector(state => state.shopOrder)
+  const [currentSelectAddress, setCurrentSelectedAddress] = useState(null)
+  const [isPaymentStart, setIsPaymentStart] = useState(false)
+  const dispatch = useDispatch()
+
+  console.log(currentSelectAddress, 'currentSelectedAddress')
+
   const totalCartAmount =
-    cartItems && cartItems.items && cartItems.items.length > 0
-      ? cartItems.items.reduce(
-          (sum, currentItem) =>
-            sum +
-            (currentItem?.salePrice > 0
-              ? currentItem?.salePrice
-              : currentItem?.price) *
-              currentItem?.quantity,
-          0
-        )
-      : 0;
+  cartItems && cartItems.items && cartItems.items.length > 0
+    ? cartItems.items.reduce(
+        (sum, currentItem) =>
+          sum +
+          (currentItem?.salePrice > 0
+            ? currentItem?.salePrice
+            : currentItem?.price) *
+            currentItem?.quantity,
+        0
+      )
+    : 0;
+
+
+  function handleInitiatePaypalPayment(){
+    const orderData = {
+      userId : user?.id,
+      cartItems : cartItems.items.map((singleCartItem) => ({
+        productId : singleCartItem?.productId,
+            title : singleCartItem?.title,
+            image : singleCartItem?.image,
+            price : singleCartItem?.salePrice > 0 ? singleCartItem?.salePrice : singleCartItem?.price,
+            quantity :singleCartItem?.quantity
+      })),
+      addressInfo : {
+        addressId : currentSelectAddress?._id,
+        address : currentSelectAddress?.address,
+        city : currentSelectAddress?.city,
+        postalCode : currentSelectAddress?.postalCode,
+        phone : currentSelectAddress?.phone,
+        notes : currentSelectAddress?.notes
+      },
+      orderStatus : 'pending',
+      paymentMethod : 'paypal',
+      paymentStatus : 'pending',
+      totalAmount : totalCartAmount,
+      orderDate : new Date(),
+      orderUpdateDate : new Date(),
+      paymentId : '',
+      payerId : '',
+    };
+
+
+    dispatch(createNewOrder(orderData)).then((data) => {
+      console.log(data,'celest');
+      if(data?.payload?.success){
+        setIsPaymentStart(true)
+      }else{
+        setIsPaymentStart(false)
+      }
+      
+    })
+    
+  }
+  
+  if(approvalURL){
+    window.location.href = approvalURL;
+  }
+
   return (
     <div className="min-h-screen ">
       <div className="container mx-auto px-4 py-8 md:px-6 lg:px-8 mt-11">
@@ -37,7 +94,7 @@ function ShoppingCheckout() {
           {/* Address Form Section */}
           <Card className="lg:col-span-2">
             <CardContent className="p-6">
-              <Address />
+              <Address setCurrentSelectedAddress={setCurrentSelectedAddress}/>
             </CardContent>
           </Card>
 
@@ -67,8 +124,11 @@ function ShoppingCheckout() {
                 </div>
               </div>
               <div>
-                <Button size="lg" className="w-full mt-4">
-                  <CreditCardIcon className="w-6 h-6 mr-2" />
+                <Button  onClick={handleInitiatePaypalPayment}
+                 size="lg" className="w-full mt-4">
+                  <CreditCardIcon className="w-6 h-6 mr-2" 
+                 
+                  />
                   Checkout with Paypal
                 </Button>
               </div>
