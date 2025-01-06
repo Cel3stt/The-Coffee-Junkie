@@ -34,6 +34,7 @@ import ProductDetailsPageWrapper from './components/shopping-view/ProductDetails
 import { omit } from 'lodash'
 import AdminOrders from './pages/admin-view/Orders/Orders'
 import PaypalReturnPage from './pages/shopping-view/paypal-return'
+import PaymentSuccessPage from './pages/shopping-view/payment-success'
 
 
 
@@ -97,6 +98,7 @@ function App() {
         <Route path='listing' element={<ShoppingListing/>}/>
         <Route path="product/:id" element={<ProductDetailsPageWrapper />} />
         <Route path='paypal-return' element={<PaypalReturnPage/>}/>
+        <Route path='payment-success' element={<PaymentSuccessPage/>}/>
         
 
 
