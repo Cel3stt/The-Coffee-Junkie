@@ -26,7 +26,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import OrderDetails from '@/pages/admin-view/Orders/Order-Details'
 import { Dialog } from '../ui/dialog'
 import AdminOrderDetailsView from './Order-Details'
 
