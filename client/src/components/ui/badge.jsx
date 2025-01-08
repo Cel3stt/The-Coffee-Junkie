@@ -23,6 +23,8 @@ const badgeVariants = cva(
         "border-transparent bg-blue-100 text-blue-800 hover:bg-blue-100",
         delivered:
         "border-transparent bg-green-100 text-green-800 hover:bg-green-100",
+        confirmed:
+        "border-transparent bg-green-100 text-green-800 hover:bg-green-100",
         active:
         "border-transparent bg-green-50 text-green-700 hover:bg-green-50",
         draft:
@@ -63,6 +65,7 @@ const badgeLabels = {
   approved: "Approved",
   rejected: "Rejected",
   completed: "Completed",
+  confirmed: "Completed",
   brand: ""
 };
 
