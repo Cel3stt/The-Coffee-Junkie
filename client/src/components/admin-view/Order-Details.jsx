@@ -19,7 +19,8 @@ import { FileText } from "lucide-react";
 import { useEffect } from "react";
 import { Separator } from "../ui/separator";
 import CommonForm from "../common/Form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllOrdersForAdmin, getOrderDetailsForAdmin, updateOrderStatus } from "@/store/admin/order-slice";
 
 const initialFormData = {
   status: "",
@@ -28,9 +29,21 @@ function AdminOrderDetailsView({ orderDetails }) {
   // const [orderStatus, setOrderStatus] = useState('')
   const [formData, setFormData] = useState(initialFormData);
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch()
 
   function handleUpdateStatus(event) {
     event.preventDefault();
+   
+    const {status} = formData
+
+    dispatch(updateOrderStatus({id: orderDetails?._id, orderStatus: status})).then(data => {
+ 
+      if(data?.payload?.success){
+        dispatch(getOrderDetailsForAdmin(orderDetails?._id))
+        dispatch(getAllOrdersForAdmin())
+        setFormData(initialFormData)
+      }
+    })
   }
   // function getStatusColor(status) {
   //     switch (status?.toLowerCase()) {
