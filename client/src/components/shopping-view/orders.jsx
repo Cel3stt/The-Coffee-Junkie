@@ -84,7 +84,7 @@ function ShoppingOrders() {
                         {orderItem?.orderStatus}
                       </Badge>
                     </TableCell>
-                    <TableCell>₱ {orderDetails?.totalAmount?.toLocaleString()}</TableCell>
+                    <TableCell>₱ {orderItem?.totalAmount?.toLocaleString()}</TableCell>
                     <TableCell>
                       <Dialog
                         open={openDetailsDialog}

@@ -35,6 +35,7 @@ import { omit } from 'lodash'
 import AdminOrders from './pages/admin-view/Orders/Orders'
 import PaypalReturnPage from './pages/shopping-view/paypal-return'
 import PaymentSuccessPage from './pages/shopping-view/payment-success'
+import ShoppingAboutUsPage from './pages/shopping-view/AboutUs'
 
 
 
@@ -92,6 +93,7 @@ function App() {
         </CheckAuth>
       }>
         <Route path='home' element={<ShoppingHome/>}/>
+        <Route path='about' element={<ShoppingAboutUsPage/>}/>
         <Route path='header' element={<ShoppingHeader/>}/>
         <Route path='checkout' element={<ShoppingCheckout/>}/>
         <Route path='account' element={<ShoppingAccount/>}/>
