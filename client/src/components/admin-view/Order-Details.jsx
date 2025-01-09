@@ -19,17 +19,18 @@ import { FileText } from "lucide-react";
 import { useEffect } from "react";
 import { Separator } from "../ui/separator";
 import CommonForm from "../common/Form";
-
+import { useSelector } from "react-redux";
 
 const initialFormData = {
-    status : ''
-}
-function AdminOrderDetailsView() {
+  status: "",
+};
+function AdminOrderDetailsView({ orderDetails }) {
   // const [orderStatus, setOrderStatus] = useState('')
-  const [formData, setFormData] = useState(initialFormData)
+  const [formData, setFormData] = useState(initialFormData);
+  const { user } = useSelector((state) => state.auth);
 
-  function handleUpdateStatus(event){
-    event.preventDefault()
+  function handleUpdateStatus(event) {
+    event.preventDefault();
   }
   // function getStatusColor(status) {
   //     switch (status?.toLowerCase()) {
@@ -52,8 +53,12 @@ function AdminOrderDetailsView() {
           <div className="space-y-1">
             <DialogTitle className="mt-5">Order Details</DialogTitle>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">Order:</span>
-              <Badge variant="secondary"></Badge>
+              <span className="text-sm text-muted-foreground">
+                Order: {orderDetails?._id}
+              </span>
+              <Badge variant={orderDetails?.orderStatus} className="py-1 px-3">
+                {orderDetails?.orderStatus}
+              </Badge>
             </div>
           </div>
           <Button variant="outline" size="sm" className="gap-2">
@@ -65,50 +70,60 @@ function AdminOrderDetailsView() {
       <Separator />
 
       {/*====================== Customer Information And Shipping Details==========================*/}
-      <div className="grid gap-6 mt-3">
-        {/* Customer and Payment Info */}
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Customer Information */}
-          <div className="space-y-4">
-            <h3 className="font-semibold">Customer Information</h3>
-            <div className="grid gap-2 text-sm">
-              <div className="grid grid-cols-3">
-                <span className="text-muted-foreground">Name:</span>
-              </div>
-              <div className="grid grid-cols-3">
-                <span className="text-muted-foreground">Shipping Address:</span>
-              </div>
-              <div className="grid grid-cols-3">
-                <span className="text-muted-foreground">City:</span>
-              </div>
-              <div className="grid grid-cols-3">
-                <span className="text-muted-foreground">Postal Code:</span>
-              </div>
-              <div className="grid grid-cols-3">
-                <span className="text-muted-foreground">Phone Number:</span>
-              </div>
-              <div className="grid grid-cols-3">
-                <span className="text-muted-foreground">Notes:</span>
-              </div>
+      <div className="grid md:grid-cols-2 gap-8 mt-4">
+        {/* Customer Information */}
+        <div className="space-y-4">
+          <h4 className="text-base font-semibold">Customer Information</h4>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Name:</span>
+              <span className="text-sm">{user?.userName}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Shipping Address:</span>
+              <span className="text-sm">{orderDetails?.addressInfo?.address}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">City:</span>
+              <span className="text-sm">{orderDetails?.addressInfo?.city}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Postal Code:</span>
+              <span className="text-sm">{orderDetails?.addressInfo?.postalCode}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Phone Number:</span>
+              <span className="text-sm">{orderDetails?.addressInfo?.phone}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Notes:</span>
+              <span className="text-sm">{orderDetails?.addressInfo?.notes || '-'}</span>
             </div>
           </div>
         </div>
-      </div>
 
-      {/*====================== Payment Details==========================*/}
-      <div className="space-y-4">
-        <h3 className="font-semibold">Payment Details</h3>
-        <div className="grid gap-2 text-sm">
-          <div className="grid grid-cols-3">
-            <span className="text-muted-foreground">Total Amount:</span>
-            {/* <span className="col-span-2">₱ {order.total?.toLocaleString()}</span> */}
-          </div>
-          <div className="grid grid-cols-3">
-            <span className="text-muted-foreground">Payment Method:</span>
-          </div>
-          <div className="grid grid-cols-3">
-            <span className="text-muted-foreground">Date:</span>
-            {/* <span className="col-span-2">{new Date(order.date).toLocaleDateString()}</span> */}
+        {/* Payment Details */}
+        <div className="space-y-4">
+          <h4 className="text-base font-semibold">Payment Details</h4>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Total Amount:</span>
+              <span className="text-sm">₱ {orderDetails?.totalAmount?.toLocaleString()}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Payment Method:</span>
+              <span className="text-sm">{orderDetails?.paymentMethod}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Date:</span>
+              <span className="text-sm">
+                {orderDetails?.orderDate ? orderDetails.orderDate.split("T")[0] : '-'}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Payment Status:</span>
+              <span className="text-sm">{orderDetails?.paymentStatus}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -126,19 +141,22 @@ function AdminOrderDetailsView() {
               </tr>
             </thead>
             <tbody>
-              {/* {order.items?.map((item, index) => ( */}
-              <tr className="border-t">
-                <td className="py-2 px-4">item name</td>
-                <td className="py-2 px-4 text-center">quantity</td>
-                <td className="py-2 px-4 text-right">₱ item.price</td>
-              </tr>
-              {/* ))} */}
+              {orderDetails?.cartItems && orderDetails?.cartItems.length > 0
+                ? orderDetails?.cartItems.map((item) => (
+                    <tr className="border-t">
+                      <td className="py-2 px-4">{item.title}</td>
+                      <td className="py-2 px-4 text-center">{item.quantity}</td>
+                      <td className="py-2 px-4 text-right">₱ {item.price}</td>
+                    </tr>
+                  ))
+                : null}
+
               <tr className="border-t bg-muted/50">
                 <td colSpan="2" className="py-2 px-4 font-medium text-right">
                   Total:
                 </td>
                 <td className="py-2 px-4 font-medium text-right">
-                  order.total
+                  ₱ {orderDetails?.totalAmount?.toLocaleString()}
                 </td>
               </tr>
             </tbody>

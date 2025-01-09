@@ -37,6 +37,7 @@ function ShoppingOrders() {
   useEffect(() => {
     dispatch(getAllOrdersByUserId(user?.id));
   }, [dispatch]);
+  
 
   useEffect(() => {
     if (orderDetails !== null) setOpenDetailsDialog(true);
@@ -83,7 +84,7 @@ function ShoppingOrders() {
                         {orderItem?.orderStatus}
                       </Badge>
                     </TableCell>
-                    <TableCell>${orderItem?.totalAmount}</TableCell>
+                    <TableCell>₱ {orderDetails?.totalAmount?.toLocaleString()}</TableCell>
                     <TableCell>
                       <Dialog
                         open={openDetailsDialog}

@@ -14,8 +14,6 @@ import { useSelector } from "react-redux";
 function ShoppingOrderDetailsView({ orderDetails }) {
   const { user } = useSelector((state) => state.auth);
 
-
-
   return (
     <DialogContent className="max-w-3xl">
       <DialogHeader>
@@ -24,7 +22,9 @@ function ShoppingOrderDetailsView({ orderDetails }) {
       <div className="grid gap-6">
         {/* Order Status */}
         <Card>
-          <CardHeader className="pb-2 font-bold"> Order ID
+          <CardHeader className="pb-2 font-bold">
+            {" "}
+            Order ID
             <CardTitle className="text-lg font-medium">
               {orderDetails?._id}
             </CardTitle>
@@ -42,78 +42,80 @@ function ShoppingOrderDetailsView({ orderDetails }) {
         </Card>
 
         {/* Customer and Payment Info */}
-           {/* Customer and Payment Info */}
-           <div className="grid md:grid-cols-2 gap-6">
-            {/* Customer Information */}
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg font-medium">Customer Information</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <dl className="grid gap-2 text-sm">
-                  <div className="flex justify-between">
-                    <dt className="text-muted-foreground">Name:</dt>
-                    <dd>{user?.userName}</dd>
-                  </div>
-                  <div className="flex justify-between">
-                    <dt className="text-muted-foreground">Shipping Address:</dt>
-                    <dd>{orderDetails?.addressInfo?.address}</dd>
-                  </div>
-                  <div className="flex justify-between">
-                    <dt className="text-muted-foreground">City:</dt>
-                    <dd>{orderDetails?.addressInfo?.city}</dd>
-                  </div>
-                  <div className="flex justify-between">
-                    <dt className="text-muted-foreground">Postal Code:</dt>
-                    <dd>{orderDetails?.addressInfo?.postalCode}</dd>
-                  </div>
-                  <div className="flex justify-between">
-                    <dt className="text-muted-foreground">Phone Number:</dt>
-                    <dd>{orderDetails?.addressInfo?.phone}</dd>
-                  </div>
-                  <div className="flex justify-between">
-                    <dt className="text-muted-foreground">Notes:</dt>
-                    <dd>{orderDetails?.addressInfo?.notes || '-'}</dd>
-                  </div>
-                </dl>
-              </CardContent>
-            </Card>
+        {/* Customer and Payment Info */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Customer Information */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg font-medium">
+                Customer Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <dl className="grid gap-2 text-sm">
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">Name:</dt>
+                  <dd>{user?.userName}</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">Shipping Address:</dt>
+                  <dd>{orderDetails?.addressInfo?.address}</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">City:</dt>
+                  <dd>{orderDetails?.addressInfo?.city}</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">Postal Code:</dt>
+                  <dd>{orderDetails?.addressInfo?.postalCode}</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">Phone Number:</dt>
+                  <dd>{orderDetails?.addressInfo?.phone}</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">Notes:</dt>
+                  <dd>{orderDetails?.addressInfo?.notes || "-"}</dd>
+                </div>
+              </dl>
+            </CardContent>
+          </Card>
 
-            {/* Payment Details */}
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg font-medium">Payment Details</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <dl className="grid gap-2 text-sm">
-                  <div className="flex justify-between">
-                    <dt className="text-muted-foreground">Total Amount:</dt>
-                    <dd>₱ {orderDetails?.totalAmount?.toLocaleString()}</dd>
-                  </div>
-                  <div className="flex justify-between">
-                    <dt className="text-muted-foreground">Payment Method:</dt>
-                    <dd>{orderDetails?.paymentMethod}</dd>
-                  </div>
-                  <div className="flex justify-between">
-                    <dt className="text-muted-foreground">Date:</dt>
-                    <dd>{orderDetails?.orderDate.split("T")[0]}</dd>
-                  </div>
-                  <div className="flex justify-between">
-                    <dt className="text-muted-foreground">Payment Status:</dt>
-                    <dd>{orderDetails?.paymentStatus}</dd>
-                  </div>
-                </dl>
-              </CardContent>
-            </Card>
-          </div>
+          {/* Payment Details */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg font-medium">
+                Payment Details
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <dl className="grid gap-2 text-sm">
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">Total Amount:</dt>
+                  <dd>₱ {orderDetails?.totalAmount?.toLocaleString()}</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">Payment Method:</dt>
+                  <dd>{orderDetails?.paymentMethod}</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">Date:</dt>
+                  <dd>{orderDetails?.orderDate.split("T")[0]}</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">Payment Status:</dt>
+                  <dd>{orderDetails?.paymentStatus}</dd>
+                </div>
+              </dl>
+            </CardContent>
+          </Card>
+        </div>
         {/* Order Items */}
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-lg font-medium">Order Items</CardTitle>
-           
           </CardHeader>
           <CardContent>
-            
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="bg-muted/50">
@@ -126,21 +128,27 @@ function ShoppingOrderDetailsView({ orderDetails }) {
                   </tr>
                 </thead>
                 <tbody>
-                {
-              orderDetails?.cartItems && orderDetails?.cartItems.length > 0 ?
-              orderDetails?.cartItems.map(item =>  <tr className="border-t">
-                <td className="py-2 px-4">{item.title}</td>
-                <td className="py-2 px-4 text-center">{item.quantity}</td>
-                <td className="py-2 px-4 text-right">₱ {item.price}</td>
-              </tr>
-) : null
-            }
-                 
+                  {orderDetails?.cartItems && orderDetails?.cartItems.length > 0
+                    ? orderDetails?.cartItems.map((item) => (
+                        <tr className="border-t">
+                          <td className="py-2 px-4">{item.title}</td>
+                          <td className="py-2 px-4 text-center">
+                            {item.quantity}
+                          </td>
+                          <td className="py-2 px-4 text-right">
+                            ₱ {item.price}
+                          </td>
+                        </tr>
+                      ))
+                    : null}
+
                   <tr className="border-t font-medium">
                     <td colSpan="2" className="py-2 px-4 text-right">
                       Total:
                     </td>
-                    <td className="py-2 px-4 text-right font-bold text-lg">₱ {orderDetails?.totalAmount}</td>
+                    <td className="py-2 px-4 text-right font-bold text-lg">
+                      ₱ {orderDetails?.totalAmount}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -170,8 +178,8 @@ function ShoppingOrderDetailsView({ orderDetails }) {
               Track your package
             </a>
           )} */}
-          {/* </CardContent>
-        </Card> */} 
+        {/* </CardContent>
+        </Card> */}
       </div>
     </DialogContent>
   );
