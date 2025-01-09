@@ -13,6 +13,7 @@ import best3 from '../../assets/Shop/best-3.png'
 import { Settings, Zap, Leaf, ChevronRightIcon } from 'lucide-react'
 
 import { Button} from "@/components/ui/button"
+import ShoppingFooter from "@/components/shopping-view/Footer";
 
 
 const categories = [
@@ -272,6 +273,10 @@ function ShoppingHome() {
           </div>
         </div>
       </div>
+    </section>
+
+    <section>
+      <ShoppingFooter/>
     </section>
       </div>
     </div>

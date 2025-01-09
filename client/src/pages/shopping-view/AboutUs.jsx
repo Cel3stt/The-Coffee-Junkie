@@ -1,6 +1,9 @@
 import React from 'react'
 import { AwardIcon, CheckIcon, MountainIcon, ScalingIcon, UsersIcon } from 'lucide-react'
 import aboutUs from '../../assets/Shop/aboutUs.png'
+import { Button } from '@/components/ui/button'
+import ShoppingFooter from '@/components/shopping-view/Footer'
+import Logo from '../../assets/Shop/RectangleLogo.png'
 function ShoppingAboutUsPage() {
     return (
         <div className="flex flex-col min-h-screen">
@@ -8,7 +11,7 @@ function ShoppingAboutUsPage() {
           <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
             <div className="container mx-auto max-w-[900px] px-4 md:px-6">
               <div className="flex flex-col items-center justify-center text-center space-y-4">
-                <MountainIcon className="h-12 w-12" />
+                <img src={Logo} alt="The Coffee Junkie" />
                 <h1 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">About The Coffee Junkie</h1>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   The Coffee Junkie is a leading coffee equipment provider that specializes in premium coffee machines and accessories. 
@@ -87,7 +90,7 @@ function ShoppingAboutUsPage() {
                     </ul>
                   </div>
                   <div className="relative aspect-video overflow-hidden rounded-xl">
-                    <img
+                    <img1
                       src={aboutUs}
                       alt="Our Values"
                       width={550}
@@ -108,7 +111,7 @@ function ShoppingAboutUsPage() {
                   <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Achievements</div>
                   <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Our Milestones</h2>
                 </div>
-                <div className="grid gap-8 md:grid-cols-3 mt-8">
+                <div className="grid gap-8 md:grid-cols-3 mt-8 pt-8">
                   <div className="flex flex-col items-center space-y-2">
                     <div className="p-3 rounded-lg bg-primary">
                       <AwardIcon className="w-6 h-6 text-primary-foreground" />
@@ -139,6 +142,28 @@ function ShoppingAboutUsPage() {
                 </div>
               </div>
             </div>
+          </section>
+
+          <section className="w-full py-12 md:py-24 lg:py-32">
+            <div className="container mx-auto max-w-[900px] px-4 md:px-6">
+              <div className="flex flex-col items-center justify-center text-center space-y-4">
+                <div className="space-y-2">
+                  <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Join Us!</div>
+                  <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                  Ready to Elevate Your Coffee Experience?
+                  </h2>
+                  <div className='pt-9'>
+                  <Button >
+                    Explore our Products
+                  </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <ShoppingFooter/>
           </section>
         </div>
       )
