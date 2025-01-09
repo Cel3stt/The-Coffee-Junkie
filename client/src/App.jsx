@@ -36,6 +36,7 @@ import AdminOrders from './pages/admin-view/Orders/Orders'
 import PaypalReturnPage from './pages/shopping-view/paypal-return'
 import PaymentSuccessPage from './pages/shopping-view/payment-success'
 import ShoppingAboutUsPage from './pages/shopping-view/AboutUs'
+import ShoppingTermsAndConditions from './pages/shopping-view/TermsAndCondition'
 
 
 
@@ -84,6 +85,8 @@ function App() {
         <Route path='request' element={<RequestDetails/>}/>
         <Route path='settings' element={<AdminAccountSettings/>}/>
         <Route path='employeeAccount' element={<EmployeeSetting/>}/>
+     
+
       </Route>
 
       
@@ -101,6 +104,7 @@ function App() {
         <Route path="product/:id" element={<ProductDetailsPageWrapper />} />
         <Route path='paypal-return' element={<PaypalReturnPage/>}/>
         <Route path='payment-success' element={<PaymentSuccessPage/>}/>
+        <Route path='termsAndConditions' element={<ShoppingTermsAndConditions/>}/>
         
 
 

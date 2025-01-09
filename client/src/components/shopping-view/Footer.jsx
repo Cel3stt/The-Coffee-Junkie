@@ -69,7 +69,7 @@ function ShoppingFooter() {
           <div className="md:col-span-2">
             <h3 className="font-semibold mb-4">Customer Care</h3>
             <div className="grid gap-3">
-              <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground">
+              <Link to="/shop/termsAndConditions" className="text-sm text-muted-foreground hover:text-foreground">
                 Terms and Privacy
               </Link>
             </div>
