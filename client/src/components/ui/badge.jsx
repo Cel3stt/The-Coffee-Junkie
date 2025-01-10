@@ -50,7 +50,7 @@ const badgeVariants = cva(
 )
 
 const badgeLabels = {
-  default: "Default",
+  
   secondary: "Secondary",
   destructive: "Destructive",
   sale: "Sale",
@@ -70,10 +70,10 @@ const badgeLabels = {
 };
 
 
-function Badge({ className, variant, ...props }) {
+function Badge({ className, variant, children, ...props }) {
   return (
     <div className={cn(badgeVariants({ variant }), className)} {...props}>
-      {badgeLabels[variant] || ""}
+      {children || badgeLabels[variant] || ""}
     </div>
   );
 }

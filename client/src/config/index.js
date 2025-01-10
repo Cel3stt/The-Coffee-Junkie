@@ -162,13 +162,7 @@ export const addProductFormControls = [
     placeholder: "Enter color",
     componentType: "input",
   },
-  {
-    name: "lowStockThreshold",
-    label: "Low Stock Threshold",
-    type: "number",
-    placeholder: "Enter low stock threshold",
-    componentType: "input",
-  },
+ 
   {
     name: "warrantyPeriod",
     label: "Warranty Period",

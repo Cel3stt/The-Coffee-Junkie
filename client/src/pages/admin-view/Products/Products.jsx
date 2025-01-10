@@ -49,7 +49,6 @@ const initialFormData = {
   price: "",
   sku: "",
   color: "",
-  lowStockThreshold: "",
   salePrice: "",
   totalStock: "",
   features: [],

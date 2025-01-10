@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 import { HeartIcon } from "lucide-react";
 
-
 function ShoppingProductTile({
   product,
   handleGetProductDetails,
@@ -19,6 +18,7 @@ function ShoppingProductTile({
     navigate(`/shop/product/${product._id}`);
   };
 
+
   return (
     <Card className="w-full max-w-[350px] group relative space-y-4 rounded-lg">
       <div onClick={handleProductClick} className="product-card">
@@ -28,11 +28,22 @@ function ShoppingProductTile({
             alt={product?.title}
             className="w-full h-[200px] object-contain rounded-lg"
           />
-          {product?.salePrice > 0 ? (
+
+          {product?.totalStock === 0 ? (
+            <Badge className="absolute top-2 left-2 bg-red-500 text-white">
+              Out of Stock
+            </Badge>
+          ) : product?.totalStock < 10 ? (
+            <Badge className="absolute top-2 left-2 ">
+              {`Only ${product?.totalStock} items left`}
+            </Badge>
+          ) : product?.salePrice > 0 ? (
             <Badge
               variant="sale"
-              className="absolute top-2 left-2 bg-red-400"
-            ></Badge>
+              className="absolute top-2 left-2 bg-red-400 text-white"
+            >
+              Sale
+            </Badge>
           ) : null}
         </figure>
 
@@ -61,31 +72,31 @@ function ShoppingProductTile({
             ) : null}
           </div>
         </CardContent>
-
-       
       </div>
 
       <CardFooter className="flex gap-4 bg-white">
-          <span className="text-sm text-muted-foreground">
-            {product?.brand}
-          </span>
+        <span className="text-sm text-muted-foreground">{product?.brand}</span>
 
-          <Button
-            variant="outline"
-            size="icon"
-            className="flex-shrink-0 ml-auto"
-          >
-            <HeartIcon className="size-4" />
-          </Button>
+        <Button variant="outline" size="icon" className="flex-shrink-0 ml-auto">
+          <HeartIcon className="size-4" />
+        </Button>
+        {
+          product?.totalStock === 0 ? <Button
+         
+          variant="outline"
+          className="opacity-60 cursor-not-allowed"
+        >
+          <ShoppingCart className="size-4 opacity-60" />
+        </Button> :   <Button
+          onClick={() => handleAddToCart(product?._id, product?.totalStock)}
+          variant="outline"
+          className=""
+        >
+          <ShoppingCart className="size-4 " />
+        </Button>
+        }
 
-          <Button
-            onClick={() => handleAddToCart(product?._id)}
-            variant="outline"
-            className=""
-          >
-            <ShoppingCart className="size-4 " />
-          </Button>
-        </CardFooter>
+      </CardFooter>
     </Card>
   );
 }

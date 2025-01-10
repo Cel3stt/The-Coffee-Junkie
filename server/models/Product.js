@@ -35,11 +35,7 @@ const ProductSchema = new mongoose.Schema(
       maxlength: 20,           
       trim: true              
     },
-    lowStockThreshold: {
-      type: Number,
-      sparse: true,
-      default: null
-    },
+ 
     salePrice: {
       type: Number,
       sparse: true,

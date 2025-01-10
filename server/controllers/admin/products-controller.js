@@ -35,7 +35,7 @@ const addProduct = async (req, res) => {
       brand,
       price,
       sku,
-      lowStockThreshold,
+  
       salePrice,
       totalStock,
       features,
@@ -59,7 +59,6 @@ const addProduct = async (req, res) => {
       brand: brand || '',
       price: safeNumber(price, 0),
       sku: safeNumber(sku, null),  // Allow null for SKU if invalid
-      lowStockThreshold: safeNumber(lowStockThreshold, null),
       salePrice: safeNumber(salePrice, null),
       totalStock: safeNumber(totalStock, 0),
       features: Array.isArray(features) ? features : [],
@@ -134,7 +133,7 @@ const editProduct = async (req, res) => {
       brand,
       price,
       sku,
-      lowStockThreshold,
+
       salePrice,
       totalStock,
       features,
@@ -157,8 +156,7 @@ const editProduct = async (req, res) => {
     findProduct.brand = brand || findProduct.brand;
     findProduct.price = price === '' ? 0 : price|| findProduct.price;
     findProduct.sku = sku || findProduct.sku;
-    findProduct.lowStockThreshold =
-      lowStockThreshold || findProduct.lowStockThreshold;
+    
     findProduct.salePrice = salePrice === '' ? 0 : salePrice || findProduct.salePrice;
     findProduct.totalStock = totalStock || findProduct.totalStock;
     findProduct.features = features || findProduct.features;
