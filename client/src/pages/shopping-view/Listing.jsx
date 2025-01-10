@@ -159,8 +159,12 @@ function ShoppingListing() {
   }
   
 
-  function handleAddToCart(getCurrentProductId, getTotalStock) {
+  function handleAddToCart(getCurrentProductId) {
     const getCartItems = cartItems?.items || [];
+    const getCurrentProductIndex = productList.findIndex(
+      (product) => product._id === getCurrentProductId
+    );
+    const getTotalStock = productList[getCurrentProductIndex]?.totalStock || 0;
 
     if (getCartItems.length) {
       const indexOfCurrentItem = getCartItems.findIndex(
@@ -170,10 +174,9 @@ function ShoppingListing() {
         const getQuantity = getCartItems[indexOfCurrentItem].quantity;
         if (getQuantity + 1 > getTotalStock) {
           toast({
-            title: `Only ${getQuantity} quantity can be added for this item`,
+            title: `Only ${getTotalStock} quantity can be added for this item`,
             variant: "destructive",
           });
-
           return;
         }
       }
@@ -249,6 +252,9 @@ function ShoppingListing() {
     }
   }, [filters]);
 
+
+  console.log(productList, 'Product List');
+  
  
 
   return (

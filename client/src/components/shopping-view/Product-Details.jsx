@@ -15,6 +15,7 @@ function ProductDetails({ productDetails}) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.shopCart);
+  const { productList } = useSelector((state) => state.shopProducts);
   
   const {
     title,
@@ -33,25 +34,31 @@ function ProductDetails({ productDetails}) {
   const productId = productDetails?.data?._id || "defaultId";
   const totalStock = productDetails?.data?.totalStock || 0;
 
-  function handleAddToCart(getCurrentProductId, getTotalStock) {
+  function handleAddToCart(getCurrentProductId) {
     let getCartItems = cartItems.items || [];
 
     if (getCartItems.length) {
       const indexOfCurrentItem = getCartItems.findIndex(
         (item) => item.productId === getCurrentProductId
       );
+
+      const getCurrentProductIndex = productList.findIndex(
+        (product) => product._id === getCurrentProductId
+      );
+      const getTotalStock = productList[getCurrentProductIndex]?.totalStock || 0;
+
       if (indexOfCurrentItem > -1) {
         const getQuantity = getCartItems[indexOfCurrentItem].quantity;
         if (getQuantity + 1 > getTotalStock) {
           toast({
-            title: `Only ${getQuantity} quantity can be added for this item`,
+            title: `Only ${getTotalStock} quantity can be added for this item`,
             variant: "destructive",
           });
-
           return;
         }
       }
     }
+
     dispatch(
       addToCart({
         userId: user?.id,
@@ -144,9 +151,7 @@ function ProductDetails({ productDetails}) {
           <Button
             size="lg"
             className="w-full"
-            onClick={() =>
-              handleAddToCart(productDetails?.data?._id, productDetails?.data?.totalStock)
-            }
+            onClick={() => handleAddToCart(productId)}
           >
             Add to Cart
           </Button>
