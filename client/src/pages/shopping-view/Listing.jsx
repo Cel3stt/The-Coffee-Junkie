@@ -6,7 +6,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuContent,
 } from "@/components/ui/dropdown-menu";
-import { ArrowUpDownIcon } from "lucide-react";
+import { ArrowUpDownIcon, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,6 +35,8 @@ import { useNavigate } from "react-router-dom";
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 import { data } from "autoprefixer";
 import { toast } from "@/hooks/use-toast";
+import { Form } from "@/components/ui/form";
+import SearchProducts from "@/components/shopping-view/Search";
 
 function ShoppingListing() {
   const dispatch = useDispatch();
@@ -157,7 +159,6 @@ function ShoppingListing() {
       return cpyFilters;
     });
   }
-  
 
   function handleAddToCart(getCurrentProductId) {
     const getCartItems = cartItems?.items || [];
@@ -198,8 +199,8 @@ function ShoppingListing() {
     });
   }
 
-   // Optional: Function to get current filter value from URL
-   function getFilterFromURL(filterKey) {
+  // Optional: Function to get current filter value from URL
+  function getFilterFromURL(filterKey) {
     const param = searchParams.get(filterKey);
     return param ? param.split(",") : [];
   }
@@ -252,10 +253,7 @@ function ShoppingListing() {
     }
   }, [filters]);
 
-
-  console.log(productList, 'Product List');
-  
- 
+  console.log(productList, "Product List");
 
   return (
     <main className="container mx-auto px-10 md:px-6 py-8 pt-32">
@@ -322,10 +320,10 @@ function ShoppingListing() {
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-8">
               <div className="grid gap-1">
                 <h1 className="text-2xl font-bold tracking-tight">
-                  Data Table
+                  Explore Our Premium Coffee Machines
                 </h1>
                 <p className="text-gray-500 dark:text-gray-400">
-                  Filter, sort, and search the data.
+                  Find the perfect machine to brew excellence.
                 </p>
               </div>
 
@@ -361,8 +359,11 @@ function ShoppingListing() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
+            
             </div>
-
+           <div className="flex justify-end">
+            <SearchProducts/>
+           </div>
             {/* Products Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {isLoading ? (

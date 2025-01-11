@@ -57,20 +57,22 @@ function ShoppingProductTile({
             </span>
           </div>
 
-          <div className="flex justify-between items-center mb-2">
-            <span
-              className={`${
-                product?.salePrice > 0 ? "line-through" : ""
-              } text-lg font-semibold text-primary`}
-            >
-              ₱{product?.price}
-            </span>
-            {product?.salePrice > 0 ? (
-              <span className="text-lg font-semibold text-primary">
-                ₱{product?.salePrice}
+          <div className="flex items-baseline gap-2 mb-2">
+          {product?.salePrice > 0 ? (
+            <>
+              <span className="text-sm text-muted-foreground line-through">
+                ₱{product?.price.toLocaleString()}
               </span>
-            ) : null}
-          </div>
+              <span className="text-xl font-bold text-red-600">
+                ₱{product?.salePrice.toLocaleString()}
+              </span>
+            </>
+          ) : (
+            <span className="text-xl font-bold text-primary">
+              ₱{product?.price.toLocaleString()}
+            </span>
+          )}
+        </div>
         </CardContent>
       </div>
 

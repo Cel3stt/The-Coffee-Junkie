@@ -129,7 +129,7 @@ function ProductDetails({ productDetails}) {
           </div>
 
           {/* Quantity */}
-          <div>
+          {/* <div>
             <Label htmlFor="quantity" className="font-semibold text-lg">
               Quantity
             </Label>
@@ -145,16 +145,21 @@ function ProductDetails({ productDetails}) {
                 ))}
               </SelectContent>
             </Select>
-          </div>
+          </div> */}
 
           {/* Add to Cart Button */}
-          <Button
-            size="lg"
-            className="w-full"
-            onClick={() => handleAddToCart(productId)}
-          >
-            Add to Cart
-          </Button>
+
+          {
+            <Button
+              size="lg"
+              className={`w-full ${productDetails?.totalStock === 0 ? "bg-gray-400 opacity-50 cursor-not-allowed" : "bg-black"}`}
+              onClick={() => handleAddToCart(productId)}
+              disabled={productDetails?.totalStock === 0}
+            >
+              {productDetails?.totalStock === 0 ? "Out of Stock" : "Add to Cart"}
+            </Button>
+          }
+        
 
           <Separator className="my-6" />
 
