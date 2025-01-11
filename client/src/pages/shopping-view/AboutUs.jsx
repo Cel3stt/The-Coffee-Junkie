@@ -4,6 +4,7 @@ import aboutUs from '../../assets/Shop/aboutUs.png'
 import { Button } from '@/components/ui/button'
 import ShoppingFooter from '@/components/shopping-view/Footer'
 import Logo from '../../assets/Shop/RectangleLogo.png'
+import { Link } from 'react-router-dom'
 function ShoppingAboutUsPage() {
     return (
         <div className="flex flex-col min-h-screen">
@@ -153,9 +154,12 @@ function ShoppingAboutUsPage() {
                   Ready to Elevate Your Coffee Experience?
                   </h2>
                   <div className='pt-9'>
-                  <Button >
+                 
+                  <Link to ='/shop/listing'>
+                  <Button>
                     Explore our Products
                   </Button>
+                  </Link>
                   </div>
                 </div>
               </div>

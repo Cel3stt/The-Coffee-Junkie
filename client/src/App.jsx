@@ -37,6 +37,7 @@ import PaypalReturnPage from './pages/shopping-view/paypal-return'
 import PaymentSuccessPage from './pages/shopping-view/payment-success'
 import ShoppingAboutUsPage from './pages/shopping-view/AboutUs'
 import ShoppingTermsAndConditions from './pages/shopping-view/TermsAndCondition'
+import ShoppingContactUsPage from './pages/shopping-view/Contact'
 
 
 
@@ -105,6 +106,7 @@ function App() {
         <Route path='paypal-return' element={<PaypalReturnPage/>}/>
         <Route path='payment-success' element={<PaymentSuccessPage/>}/>
         <Route path='termsAndConditions' element={<ShoppingTermsAndConditions/>}/>
+        <Route path='contact' element={<ShoppingContactUsPage/>}/>
         
 
 
