@@ -26,17 +26,18 @@ const filterAndSortProducts = (products, filters, sortBy) => {
 
   if (sortBy) {
     filteredProducts.sort((a, b) => {
+      const priceA = a.salePrice || a.price || 0;
+      const priceB = b.salePrice || b.price || 0;
+
       switch(sortBy) {
-        case 'price-low-to-high':
-          return a.price - b.price;
-        case 'price-high-to-low':
-          return b.price - a.price;
-        case 'name-a-z':
-          return a.name.localeCompare(b.name);
-        case 'name-z-a':
-          return b.name.localeCompare(a.name);
-        case 'newest':
-          return new Date(b.createdAt) - new Date(a.createdAt);
+        case 'price-lowtohigh':
+          return priceA - priceB;
+        case 'price-hightolow':
+          return priceB - priceA;
+        case 'title-atoz':
+          return (a.name || "").localeCompare(b.name || "");
+        case 'title-ztoa':
+          return (b.name || "").localeCompare(a.name || "");
         default:
           return 0;
       }

@@ -275,7 +275,7 @@ function ShoppingListing() {
               </div>
 
               {/* Filter Accordion */}
-              <Accordion type="single" collapsible className="w-full">
+              <Accordion type="single" collapsible className="w-full" defaultValue="filter">
                 <AccordionItem value="filter">
                   <AccordionTrigger className="text-base">
                     Filter
