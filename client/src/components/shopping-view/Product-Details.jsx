@@ -37,15 +37,24 @@ function ProductDetails({ productDetails}) {
   function handleAddToCart(getCurrentProductId) {
     let getCartItems = cartItems.items || [];
 
+    // Check if the product is out of stock
+    const getCurrentProductIndex = productList.findIndex(
+      (product) => product._id === getCurrentProductId
+    );
+    const getTotalStock = productList[getCurrentProductIndex]?.totalStock || 0;
+
+    if (getTotalStock === 0) {
+      toast({
+        title: "This product is out of stock",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (getCartItems.length) {
       const indexOfCurrentItem = getCartItems.findIndex(
         (item) => item.productId === getCurrentProductId
       );
-
-      const getCurrentProductIndex = productList.findIndex(
-        (product) => product._id === getCurrentProductId
-      );
-      const getTotalStock = productList[getCurrentProductIndex]?.totalStock || 0;
 
       if (indexOfCurrentItem > -1) {
         const getQuantity = getCartItems[indexOfCurrentItem].quantity;
