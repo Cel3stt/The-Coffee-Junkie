@@ -50,19 +50,6 @@ function AdminOrderDetailsView({ orderDetails }) {
       }
     })
   }
-  // function getStatusColor(status) {
-  //     switch (status?.toLowerCase()) {
-  //       case 'processing':
-  //       case 'pending':
-  //         return 'bg-yellow-100 text-yellow-800'
-  //       case 'confirmed':
-  //         return 'bg-blue-100 text-blue-800'
-  //       case 'delivered':
-  //         return 'bg-green-100 text-green-800'
-  //       default:
-  //         return 'bg-gray-100 text-gray-800'
-  //     }
-  //   }
 
   return (
     <DialogContent className="max-w-3xl">
@@ -148,6 +135,17 @@ function AdminOrderDetailsView({ orderDetails }) {
 
       {/*====================== Order Status Update=========================*/}
       <div className="space-y-4">
+      <Badge
+                className={`py-1 px-3 ${
+                  orderDetails?.orderStatus === "confirmed"
+                    ? "bg-green-500"
+                    : orderDetails?.orderStatus === "rejected"
+                    ? "bg-red-600"
+                    : "bg-black"
+                }`}
+              >
+                {orderDetails?.orderStatus}
+              </Badge>
         <h3 className="font-semibold">Order Items</h3>
         <div className="border rounded-lg">
           <table className="w-full text-sm">
