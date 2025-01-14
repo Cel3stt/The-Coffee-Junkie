@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { Label } from "../ui/label";
@@ -6,17 +6,23 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { setProductDetails } from "@/store/shop/products-slice";
+import StarRatingComponent from "../common/star-rating";
+import { addReview, getReviews } from "@/store/shop/review-slice";
+
 
 
 function ProductDetails({ productDetails}) {
   // Destructure the product details with default values\
+  const [reviewMsg, setReviewMsg] = useState('')
+  const [rating, setRating] = useState(0)
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.shopCart);
+  const {reviews} = useSelector((state) => state.shopReview)
   const { productList } = useSelector((state) => state.shopProducts);
-  
+  const {toast} = useToast()
   const {
     title,
     description,
@@ -27,12 +33,17 @@ function ProductDetails({ productDetails}) {
     category
   } = productDetails?.data || {};
 
-  console.log("Product ID:", productDetails?._id);
+  console.log("Product ID:", productDetails?.data?._id );
   console.log("Total Stock:", productDetails?.totalStock);
   console.log("Product Details:", productDetails);
-
-  const productId = productDetails?.data?._id || "defaultId";
+  
+  const productId = productDetails?.data?._id || "";
   const totalStock = productDetails?.data?.totalStock || 0;
+
+
+  function handleRatingChange(getRating){
+    setRating(getRating)
+  }
 
   function handleAddToCart(getCurrentProductId) {
     let getCartItems = cartItems.items || [];
@@ -83,8 +94,39 @@ function ProductDetails({ productDetails}) {
       }
     });
   }
+
+  
+  function handleAddReview(){
+    const productId = productDetails?.data?._id ; 
+    console.log("Submitting review for product:", productId);
+
+    dispatch(addReview({
+      
+      productId: productId,
+      userId: user?.id,
+      userName: user?.userName,
+      reviewMessage: reviewMsg,
+      reviewValue: rating,
+    })).then(data => {
+      if(data.payload?.success){
+        dispatch(getReviews(productDetails?.data?._id))
+        toast({
+          Title: "Reviews added successfully"
+          
+        })
+      }
+      console.log("Review submission response:", data);
+    });
+  }
+
+  useEffect(() => {
+
+    if(productDetails !== null) dispatch(getReviews(productDetails?.data?._id))
+  }, [productDetails])
+
+  console.log(reviews, 'reviews')
   return (
-    <div className="container mx-auto px-4 sm:px-6 md:px-8 py-8">
+    <div className="container mx-auto px-4 sm:px-6 md:px-8 mt-11">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         {/* Left Section: Product Image */}
         <div>
@@ -250,30 +292,29 @@ function ProductDetails({ productDetails}) {
 
     {/* Right Column: Add a Review */}
     <div>
-      <h2 className="font-bold text-2xl mb-6">Write a Review</h2>
+      <h2 className="font-bold text-2xl mb-2">Write a Review</h2>
       <div className="space-y-4">
         {/* Product Title */}
-        <h3 className="text-lg font-bold">Acme Prism T-Shirt: The Cozy Chromatic Blend</h3>
         <div className="flex gap-1">
-          {[...Array(3)].map((_, i) => (
-            <span key={i} className="text-yellow-500 text-xl">★</span>
-          ))}
-          {[...Array(2)].map((_, i) => (
-            <span key={i} className="text-gray-300 text-xl">★</span>
-          ))}
+        
+        
+          <StarRatingComponent rating={rating} handleRatingChange={handleRatingChange} />
         </div>
 
         {/* Review Input */}
         <textarea
+          name="reviewMsg"
+          value={reviewMsg}
+          onChange={(event) => setReviewMsg(event.target.value)}
           placeholder="Write your review..."
           rows="6"
           className="w-full border rounded-lg p-3 text-gray-700"
         ></textarea>
 
         {/* Submit Button */}
-        <button className="bg-black text-white px-6 py-2 rounded hover:bg-gray-800">
+        <Button onClick={handleAddReview} disabled={reviewMsg.trim() === ''}  className="bg-black text-white px-6 py-2 rounded hover:bg-gray-800">
           Submit
-        </button>
+        </Button>
       </div>
     </div>
   </div>

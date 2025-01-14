@@ -58,10 +58,6 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       default: 'draft'
     },
-    color: {
-      type: String,
-      default: 'draft'
-    },
     averageReview: {
       type: Number,
       default: 0,

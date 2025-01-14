@@ -15,7 +15,7 @@ function ShoppingProductTile({
   const navigate = useNavigate();
 
   const handleProductClick = () => {
-    navigate(`/shop/product/${product._id}`);
+    navigate(`/shop/product/${product?._id}`);
   };
 
 

@@ -18,6 +18,7 @@ export const addToCart = createAsyncThunk(
       }
     );
     return response.data
+    
   }
 );
 

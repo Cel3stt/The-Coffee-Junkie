@@ -98,9 +98,11 @@ const capturePayment = async (req, res) => {
   try {
     const { paymentId, payerId, orderId } = req.body;
 
-    const order = await Order.findById(orderId);
+    let order = await Order.findById(orderId);
 
     if (!order) {
+      console.error("Order not found with ID:", orderId);
+
       return res.status(404).json({
         success: false,
         message: "Order not found",
