@@ -1,6 +1,10 @@
+import { Button } from '@/components/ui/button'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
+
 
 function PaymentSuccessPage() {
+  const navigate = useNavigate()
     function CircleCheckIcon(props) {
         return (
           <svg
@@ -20,29 +24,23 @@ function PaymentSuccessPage() {
           </svg>
         )
       }
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
-    <div className="max-w-md w-full space-y-6 p-6 bg-white rounded-lg shadow-lg dark:bg-gray-800">
+    return(
+      <div className=" container mx-auto px-6 py-1 flex flex-col items-center justify-center min-h-screen  dark:bg-gray-900">
+    <div className="max-w-md w-full space-y-6 p-6 bg-white rounded-lg dark:bg-gray-800">
       <div className="flex flex-col items-center">
-        <CircleCheckIcon className="text-green-500 h-16 w-16" />
+        <CircleCheckIcon className="text-green-600 h-16 w-16" />
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-50 mt-4">Payment Successful</h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-2">
+        <p className="text-gray-500 dark:text-gray-400 mt-2 text-center">
           Thank you for your payment. Your order is being processed.
         </p>
+        <Button
+        onClick={() => navigate('/shop/account')}
+        className='items-center mt-6'>
+        View Order History
+      </Button>
       </div>
-      <div className="border-t border-gray-200 dark:border-gray-700 pt-6 space-y-4">
-        <div className="flex justify-between">
-          <span className="text-gray-500 dark:text-gray-400">Amount Paid:</span>
-          <span className="font-medium text-gray-900 dark:text-gray-50">$99.99</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-500 dark:text-gray-400">Payment Method:</span>
-          <span className="font-medium text-gray-900 dark:text-gray-50">Visa ending in 1234</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-500 dark:text-gray-400">Date &amp; Time:</span>
-          <span className="font-medium text-gray-900 dark:text-gray-50">April 18, 2024 at 3:45 PM</span>
-        </div>
-      </div>
+    
+    
       {/* <div className="flex justify-center">
         <Link
           href="#"
@@ -54,6 +52,7 @@ function PaymentSuccessPage() {
       </div> */}
     </div>
   </div>
+    )
 }
 
 export default PaymentSuccessPage

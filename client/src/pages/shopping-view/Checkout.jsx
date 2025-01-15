@@ -149,7 +149,9 @@ function ShoppingCheckout() {
                   <CreditCardIcon className="w-6 h-6 mr-2" 
                  
                   />
-                  Checkout with Paypal
+                 {
+                  isPaymentStart ? 'Processing Paypal Payment...' : 'Checkout with Paypal'
+                 }
                 </Button>
               </div>
             </CardContent>

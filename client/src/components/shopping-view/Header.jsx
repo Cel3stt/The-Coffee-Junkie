@@ -63,7 +63,7 @@ function HeaderRightContent() {
           className='relative'
         >
           <ShoppingCart />
-          <span     className="absolute h-6 w-6 flex items-center justify-center rounded-full bg-red-400 text-white left-7 top-0 text-sm"
+          <span className="absolute h-6 w-6 flex items-center justify-center rounded-full text-red-600 left-5 top-[-4px] text-sm"
           >{cartItems?.items?.length || ''} </span>
         </Button>
 
