@@ -61,6 +61,16 @@ function App() {
 
   return (
     <Routes>
+
+<Route
+          path="/"
+          element={
+            <CheckAuth
+              isAuthenticated={isAuthenticated}
+              user={user}
+            ></CheckAuth>
+          }
+        />
       <Route path='/auth' element={
         <CheckAuth isAuthenticated={isAuthenticated} user={user}>
           <AuthLayout/>
@@ -107,21 +117,8 @@ function App() {
         <Route path='payment-success' element={<PaymentSuccessPage/>}/>
         <Route path='termsAndConditions' element={<ShoppingTermsAndConditions/>}/>
         <Route path='contact' element={<ShoppingContactUsPage/>}/>
-        
-
-
-     
-
-       
-
-
-
      </Route>
-     
-
-     
-     
-
+  
       <Route path='*' element={<NotFound/>}></Route>
     </Routes>
   )

@@ -114,7 +114,7 @@ function ShoppingCheckout() {
           {/* Address Form Section */}
           <Card className="lg:col-span-2">
             <CardContent className="p-6">
-              <Address setCurrentSelectedAddress={setCurrentSelectedAddress}/>
+              <Address selectedId={currentSelectAddress} setCurrentSelectedAddress={setCurrentSelectedAddress}/>
             </CardContent>
           </Card>
 

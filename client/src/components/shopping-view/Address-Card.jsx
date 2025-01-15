@@ -8,18 +8,19 @@ function AddressCard({
   handleDeleteAddress,
   handleEditAddress,
   setCurrentSelectedAddress,
+  selectedId
   
 }) {
   return (
     <Card
-      className="mb-4"
+      className={`mb-4 cursor-pointer border-gray-600 ${selectedId?._id === addressInfo?._id ? 'border-gray-600' : 'border-0'}`}
       onClick={
         setCurrentSelectedAddress
           ? () => setCurrentSelectedAddress(addressInfo)
           : null
       }
     >
-      <CardContent className="pt-6">
+      <CardContent className={`${selectedId === addressInfo?._id ? 'border-black' : ''}pt-6`}>
         <div className="space-y-2">
           <div className="flex justify-between">
             <span className="text-sm text-gray-500">Address:</span>
