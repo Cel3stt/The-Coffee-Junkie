@@ -5,6 +5,7 @@ import axios from "axios";
 const initialState = {
     orderList : [],
     orderDetails : null,
+    
 }
 export const getAllOrdersForAdmin = createAsyncThunk(
   "/order/getAllOrdersForAdmin",

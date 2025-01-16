@@ -35,11 +35,60 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchAllProducts } from '@/store/admin/products-slice'
+import { getAllOrdersForAdmin } from '@/store/admin/order-slice'
 
 
 const Dashboard = () => {
-  const [date, setDate] = React.useState(new Date())
+  const dispatch = useDispatch()
+  const productList = useSelector((state) => state.adminProducts.productList)
+  const orderList = useSelector((state) => state.adminOrder.orderList || [])
+
+  const totalProducts = productList.length
+  const [lowStockProducts, setLowStockProducts] = useState([]) // New state for low stock products
+  const [date, setDate] = useState(new Date())
+  const [totalSales, setTotalSales] = useState(0)
+
+  useEffect(() => {
+    dispatch(fetchAllProducts())
+    dispatch(getAllOrdersForAdmin())
+  }, [dispatch])
+
+  useEffect(() => {
+    const fetchLowStockProducts = () => {
+      const lowStock = productList.filter(product => product.totalStock < 5);
+      setLowStockProducts(lowStock);
+    };
+  
+    fetchLowStockProducts();
+  }, [productList]);
+  
+  useEffect(() => {
+    console.log('Order List:', orderList) // Debugging: Check order list
+    const calculateTotalSales = () => {
+      const selectedDate = format(date, 'yyyy-MM-dd') // Adjust format as needed
+      console.log('Selected Date:', selectedDate) // Debugging: Check selected date
+      const filteredOrders = orderList.filter(order => {
+        try {
+          const orderDate = format(new Date(order.orderDate), 'yyyy-MM-dd') // Directly use new Date()
+          console.log('Order Date:', orderDate) // Debugging: Check order date
+          return orderDate === selectedDate
+        } catch (error) {
+          console.error('Error parsing date:', error)
+          return false
+        }
+      })
+      console.log('Filtered Orders:', filteredOrders) // Debugging: Check filtered orders
+      const total = filteredOrders.reduce((sum, order) => sum + order.totalAmount, 0)
+      console.log('Total Sales:', total) // Debugging: Check total sales
+      setTotalSales(total)
+    }
+
+    calculateTotalSales()
+  }, [orderList, date])
+
   const orders = [
     {
       customerName: "Jane Smith",
@@ -114,9 +163,9 @@ const Dashboard = () => {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
+            <div className="text-2xl font-bold">1111</div>
             <p className="text-xs text-muted-foreground">
-              +20.1% from last month
+              Based on selected date
             </p>
           </CardContent>
         </Card>
@@ -130,7 +179,7 @@ const Dashboard = () => {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+2350</div>
+            <div className="text-2xl font-bold">₱{totalSales.toLocaleString()}</div>
             <p className="text-xs text-muted-foreground">
               +180.1% from last month
             </p>
@@ -144,7 +193,7 @@ const Dashboard = () => {
             <CreditCard className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+12,234</div>
+            <div className="text-2xl font-bold">{totalProducts}</div>
             <p className="text-xs text-muted-foreground">
               +19% from last month
             </p>
